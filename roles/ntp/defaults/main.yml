@@ -1,0 +1,127 @@
+---
+
+# If ``True``, role will install and configure an NTP daemon. The daemon is not
+# required in containerized environments, where the host takes care for setting
+# time accurately.
+ntp__daemon_enabled: '{{ "True" if (ntp__daemon | d() and
+                                    ((ansible_system_capabilities_enforced | d()) | bool and
+                                      "cap_sys_time" in ansible_system_capabilities) or
+                                     not (ansible_system_capabilities_enforced | d(True)) | bool)
+                                else "False" }}'
+
+# Which clock management daemon/program should be setup?
+#
+# Choices (string):
+#
+# - chrony
+# - ntpdate
+# - ntpd
+# - openntpd
+# - systemd-timesyncd
+#
+# Set to ``False`` to disable clock management.
+ntp__daemon: '{{ (ansible_local.ntp.daemon
+                  if (ansible_local.ntp.daemon | d())
+                  else ("systemd-timesyncd"
+                        if (ansible_distribution == "Ubuntu" and
+                            ansible_service_mgr == "systemd")
+                        else "openntpd")) }}'
+
+# Don't uninstall ``ntpdate`` package if it's installed. Be aware that
+# ``ntpdate-debian`` script is executed each time a network interface is
+# brought up. This might result in unexpected time jumps forward or backward.
+ntp__ignore_ntpdate: False
+
+# List of NTP servers to synchronize with
+# If you use :program:`ntpd`, you can add server options in server strings, for example::
+#
+#     ntp__servers:
+#       - '0.debian.pool.ntp.org iburst minpoll 6 maxpoll 10'
+#
+# If you're syncing against local servers, recommended options are:
+# 'burst iburst minpoll 4 maxpoll 4', where:
+#
+# ``burst`` and ``iburst``:
+#   Get a time sync as fast as possible by sending 8 sync queries with 2 second
+#   interval. (Beware though, this is considered as an abuse on public servers!)
+#
+# ``minpoll``, ``maxpoll``:
+#   Min/max interval for sync queries to be sent in normal operation mode. It's
+#   defined in seconds as a power of two:
+#
+#   * 4 -- 16 seconds (minimal allowed)
+#   * 5 -- 32 seconds
+#   * 6 -- 64 seconds
+#
+#   and so on.
+#
+ntp__servers: '{{ (ntp__servers_map[ansible_distribution][1]
+                   | d(ntp__servers_map["default"][1]))
+                   if (ntp__daemon in ["chrony"])
+                   else ntp__servers_map[ansible_distribution]
+                        | d(ntp__servers_map["default"]) }}'
+
+# YAML dictionary with different NTP server lists depending on OS distribution.
+ntp__servers_map:
+  'Debian':  [ '0.debian.pool.ntp.org', '1.debian.pool.ntp.org',
+               '2.debian.pool.ntp.org', '3.debian.pool.ntp.org' ]
+  'Ubuntu':  [ '0.ubuntu.pool.ntp.org', '1.ubuntu.pool.ntp.org',
+               '2.ubuntu.pool.ntp.org', '3.ubuntu.pool.ntp.org' ]
+  'default': [ '0.pool.ntp.org', '1.pool.ntp.org',
+               '2.pool.ntp.org', '3.pool.ntp.org' ]
+
+# Fudge local clock if time servers is not available.
+ntp__fudge: True
+
+# Treat NTP server addresses as pool addresses. The server name is expected
+# to resolve to multiple IP addresses which might change over time. This is
+# currently only supported by :program:`chrony`. Other NTP servers will
+# ignore this setting.
+ntp__servers_as_pool: True
+
+# List of APT packages to install for NTP support.
+ntp__base_packages:
+  - '{{ "chrony"   if (ntp__daemon == "chrony")   else [] }}'
+  - '{{ "ntp"      if (ntp__daemon == "ntpd")     else [] }}'
+  - '{{ "openntpd" if (ntp__daemon == "openntpd") else [] }}'
+  - '{{ "ntpdate"  if (ntp__daemon == "ntpdate")  else [] }}'
+
+# List of additional APT packages to install with NTP support.
+ntp__packages: []
+
+# List of APT packages to purge during NTP configuration to avoid issues with
+# conflicting services.
+ntp__purge_packages:
+  - '{{ "chrony"   if (ntp__daemon != "chrony")                  else [] }}'
+  - '{{ "ntp"      if (ntp__daemon not in [ "ntpd", "openntpd"]) else [] }}'
+  - '{{ "openntpd" if (ntp__daemon != "openntpd")                else [] }}'
+  - '{{ "ntpdate"  if (ntp__daemon != "ntpdate" and
+                       not ntp__ignore_ntpdate | bool)             else [] }}'
+
+# OpenNTPd configuration
+
+# Set the ``openntpd`` daemon options.
+ntp__openntpd_options: '-f /etc/openntpd/ntpd.conf -s'
+
+# Chrony configuration
+
+# Set the ``chrony`` cmdport option. 323 is the chrony default, but
+# debops recommends you default to 0 to disable UDP connections which
+# requires ``chronyc`` be run as root to connect over unix socket.
+ntp__chrony_cmdport: 0
+
+# Network accessibility
+
+# The `chrony` service only supports one listen interface for each of
+# the IPv4 and IPv6 protocols. It must be specified as an IP address.
+ntp__listen: []
+
+# List of hosts/networks in CIDR format to allow access to the NTP port by the
+# firewall. If this list is set to ``False``, access will be allowed from
+# anywhere. You should probably define a list of networks allowed access to
+# mitigate NTP amplification attacks.
+ntp__allow: []
+
+
+
+...

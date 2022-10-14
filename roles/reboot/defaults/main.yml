@@ -1,0 +1,37 @@
+---
+
+# Command to run that returns a unique string indicating the last time the
+# system was booted.
+#
+# By default, the ``reboot`` Ansible module checks the contents of the
+# `/proc/sys/kernel/random/boot_id` file. This causes issues in LXC
+# containers however. Using the `uptime` command seems to fix the
+# problem, so it is used by the role for the meantime.
+#
+# Ref: https://github.com/ansible/ansible/issues/57768
+reboot__boot_time_command: 'uptime'
+
+# If set to ``True``, the role will reboot the host on each execution even if
+# the `/var/run/reboot-required` file is not present.
+reboot__force: False
+
+# List of filesystem paths to search on the remote machine for the
+# `shutdown` command. The ``$PATH`` variable is ignored in the remote
+# node when searching for the `shutdown` command.
+reboot__default_search_paths:
+  - '/lib/molly-guard'
+  - '/sbin'
+  - '/usr/sbin'
+  - '/usr/local/sbin'
+
+# List of additional paths which should be searched for the `shutdown`
+# command.
+reboot__search_paths: []
+
+# Maximum number of seconds to wait for machine to reboot and respond to a test
+# command.
+#
+# This timeout is evaluated separately for both reboot verification and test
+# command success so the maximum execution time for the module is twice this
+# amount.
+reboot__timeout: 600

@@ -1,0 +1,15 @@
+---
+
+- name: Manage smartmontools package contains two utility programs (smartctl and smartd) to control and monitor storage systems
+  collections: [ 'progeek.bootstrap' ]
+  hosts: [ 'all_hosts', 'service_smartmontools' ]
+  become: True
+
+  environment: '{{ inventory__environment | d({})
+                   | combine(inventory__group_environment | d({}))
+                   | combine(inventory__host_environment  | d({})) }}'
+
+  roles:
+
+    - role: smartmontools
+      tags: [ 'role::smartmontools', 'skip::smartmontools' ]

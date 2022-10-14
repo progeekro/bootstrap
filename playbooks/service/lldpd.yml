@@ -1,0 +1,15 @@
+---
+
+- name: Manage LLDP service
+  collections: [ 'progeek.bootstrap' ]
+  hosts: [ 'all_hosts', 'service_lldpd' ]
+  become: True
+
+  environment: '{{ inventory__environment | d({})
+                   | combine(inventory__group_environment | d({}))
+                   | combine(inventory__host_environment  | d({})) }}'
+
+  roles:
+
+    - role: lldpd
+      tags: [ 'role::lldpd', 'skip::lldpd' ]

@@ -1,0 +1,76 @@
+---
+
+# - name: Install required packages
+#   package:
+#     name: '{{ (parted__base_packages + parted__packages) | flatten }}'
+#     state: 'present'
+#   register: parted__register_packages
+#   until: parted__register_packages is succeeded
+#   when: parted__enabled | bool
+
+# - name: "Creating partitions on disks ..."
+#   parted:
+#     device: "{{ item.disk }}"
+#     number: "{{ item.number }}"
+#     state: "{{ item.state }}"
+#     part_start: "{{ item.part_start }}"
+#     part_end: "{{ item.part_end }}"
+#   with_items: "{{ additional_disks }}"
+
+- name: Create partitions
+  community.general.parted:    
+    device: >-
+      {{ parted_disk.device }}
+    align: >-
+      {{ parted_disk.align
+         | default(parted_disks_defaults.align)
+         | default(omit) }}
+    number: >-
+      {{ parted_disk.number
+         | default(parted_disks_defaults.number)
+         | default(omit) }}
+    part_type: >-
+      {{ parted_disk.part_type
+         | default(parted_disks_defaults.part_type)
+         | default(omit) }}
+    part_start: >-
+      {{ parted_disk.part_start
+         | default(parted_disks_defaults.part_start)
+         | default(omit) }}
+    part_end: >-
+      {{ parted_disk.part_end
+         | default(parted_disks_defaults.part_end)
+         | default(omit) }}
+    flags: >-
+      {{ parted_disk.flags
+         | default(parted_disks_defaults.flags)
+         | default(omit) }}
+    state: >-
+      {{ parted_disk.state
+         | default(parted_disks_defaults.state)
+         | default(omit) }}
+    label: >-
+      {{ parted_disk.label
+         | default(parted_disks_defaults.lavel)
+         | default(omit) }}
+    name: >-
+      {{ parted_disk.name
+         | default(parted_disks_defaults.name)
+         | default(omit) }}
+    unit: >-
+      {{ parted_disk.unit
+         | default(parted_disks_defaults.unit)
+         | default(omit) }}
+  loop: "{{ parted_disks_to_manage }}"
+  loop_control:
+    loop_var: parted_disk
+    label: "{{ parted_disk.device }}{{ parted_disk.number }}"
+
+- name: "Creating filesystems on disks ..."
+  filesystem:
+    fstype: "{{ parted_disk.fstype }}"
+    dev: "{{ parted_disk.device }}{{ parted_disk.number }}"
+  loop: "{{ parted_disks_to_manage }}"
+  loop_control:
+    loop_var: parted_disk
+    label: "{{ parted_disk.device }}{{ parted_disk.number }}"

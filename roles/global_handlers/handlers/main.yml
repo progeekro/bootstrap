@@ -1,0 +1,13 @@
+---
+
+# The order of the imports affects the execution order of handlers.
+
+- import_tasks: 'meta.yml'
+
+- import_tasks: 'ntp.yml'
+
+- import_tasks: 'lldpd.yml'
+
+- import_tasks: 'hddtemp.yml'
+
+- import_tasks: 'smartmontools.yml'

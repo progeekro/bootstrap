@@ -1,0 +1,30 @@
+#!{{ ansible_python['executable'] }}
+# -*- coding: utf-8 -*-
+
+from __future__ import print_function
+from json import loads, dumps
+from sys import exit
+import os
+
+# Workaround to allow Jinja template inside of a Python script
+"""
+{% set smartd__tpl_facts = {} %}
+
+{% set _ = smartd__tpl_facts.update({ "configured": True }) %}
+
+{% set _ = smartd__tpl_facts.update({ "enabled": 
+    smartd__enabled | bool }) %}
+
+{% if lsblk_devices is defined %}
+    {% set disk_devices = lsblk_devices.stdout.splitlines()|map('trim')|list %}
+    {% set _ = smartd__tpl_facts.update({ "disk_by_id":
+        disk_devices | 
+        map('extract', hostvars[inventory_hostname]['ansible_devices'], ['links', 'ids', 0]) | 
+        list | map('regex_replace', '^(.*)', '/dev/disk/by-id/\\g<1>') | list }) %}
+{% endif %}
+"""
+
+output = loads('''{{ smartd__tpl_facts | to_nice_json }}''')
+
+
+print(dumps(output, sort_keys=True, indent=4))

@@ -1,0 +1,35 @@
+---
+
+- name: Import assert.yml
+  include_tasks: assert.yml
+  run_once: true
+
+  # This task allows configuration of the outer mount point attributes, but
+  # will not change them while the device is mounted.
+- name: Ensure that the mount points exist
+  ansible.builtin.file:
+    path:    '{{ item.path | d(item.dest | d(item.name)) }}'
+    owner:   '{{ item.owner | d(omit) }}'
+    group:   '{{ item.group | d(item.owner | d(omit)) }}'
+    mode:    '{{ item.mode | d("0755") }}'
+    state:   'directory'
+  loop: '{{ mount_disks_to_manage }}'
+  when: (mount__enabled | bool and item.state | d('mounted') in ['mounted', 'present', 'unmounted'] and
+         (item.device | d(item.src)) not in (ansible_mounts | map(attribute='device') | list))
+
+- name: "Getting partition UUID ..."
+  command: /sbin/blkid -s UUID -o value {{ item.device }}{{ item.number }}
+  register: register_disk_blkid
+  with_items: "{{ mount_disks_to_manage }}"
+  changed_when: False
+
+- name: "Mounting disks ..."
+  mount:
+    path: "{{ item.0.path }}"
+    src: "UUID={{ item.1.stdout }}"
+    fstype: "{{ item.0.fstype }}"
+    opts: "{{ item.0.opts | d(omit) }}"
+    state: "{{ item.0.state }}"
+  with_together:
+    - "{{ mount_disks_to_manage }}"
+    - "{{ register_disk_blkid.results }}"

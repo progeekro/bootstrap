@@ -1,0 +1,5 @@
+---
+
+- import_playbook: parted.yml
+
+- import_playbook: mount.yml

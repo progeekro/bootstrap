@@ -1,0 +1,15 @@
+---
+
+- name: Manage HP ProLiant MicroServer Gen8 servers
+  collections: [ 'progeek.bootstrap' ]
+  hosts: [ 'service_hp_t620' ]
+  become: True
+
+  environment: '{{ inventory__environment | d({})
+                   | combine(inventory__group_environment | d({}))
+                   | combine(inventory__host_environment  | d({})) }}'
+
+  roles:
+
+    - role: hp_t620
+      tags: [ 'role::hp_t620', 'skip::hp_t620' ]

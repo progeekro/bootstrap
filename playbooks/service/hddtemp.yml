@@ -1,0 +1,15 @@
+---
+
+- name: Manage hddtemp, a small utility (with daemon) that gives the hard-drive temperature via S.M.A.R.T.
+  collections: [ 'progeek.bootstrap' ]
+  hosts: [ 'all_hosts', 'service_hddtemp' ]
+  become: True
+
+  environment: '{{ inventory__environment | d({})
+                   | combine(inventory__group_environment | d({}))
+                   | combine(inventory__host_environment  | d({})) }}'
+
+  roles:
+
+    - role: hddtemp
+      tags: [ 'role::hddtemp', 'skip::hddtemp' ]

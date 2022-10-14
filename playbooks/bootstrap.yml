@@ -1,0 +1,63 @@
+---
+
+- name: Security assertions
+  collections: [ 'progeek.bootstrap' ]
+  hosts: [ 'all' ]
+  tags: [ 'play::security-assertions' ]
+  gather_facts: False
+  become: False
+
+  tasks:
+
+    - name: Check for Ansible version without known vulnerabilities
+      ansible.builtin.assert:
+        that:
+          - 'ansible_version.full is version_compare("2.1.5.0", ">=")'
+          - '((ansible_version.minor == 2) and
+              (ansible_version.full is version_compare("2.2.2.0", ">="))) or
+             (ansible_version.minor != 2)'
+        msg: |
+          VULNERABLE or unsupported Ansible version DETECTED, please update to
+          Ansible >= v2.1.5 or a newer Ansible release >= v2.2.2! To skip, add
+          "--skip-tags play::security-assertions" parameter. Check the
+          debops-playbook changelog for details. Exiting.
+      run_once: True
+      delegate_to: 'localhost'
+
+- name: Bootstrap Python support on a host
+  collections: [ 'progeek.bootstrap' ]
+  hosts: [ 'all_hosts', 'service_bootstrap' ]
+  strategy: linear
+  gather_facts: False
+  become: True
+
+  tasks:
+    - name: Initialize Ansible support via raw tasks
+      import_role:
+        name: 'python'
+        tasks_from: 'main_raw'
+      tags: [ 'role::python_raw', 'skip::python_raw', 'role::python' ]
+
+- import_playbook: 'service/apt.yml'
+
+- import_playbook: 'service/bootstrap.yml'
+
+- import_playbook: 'service/microserver_gen8.yml'
+
+- import_playbook: 'service/t620.yml'
+
+- import_playbook: 'service/parted.yml'
+
+- import_playbook: 'service/mount.yml'
+
+- import_playbook: 'service/ntp.yml'
+
+- import_playbook: 'service/tzdata.yml'
+
+- import_playbook: 'service/lldpd.yml'
+
+- import_playbook: 'service/hddtemp.yml'
+
+- import_playbook: 'service/smartmontools.yml'
+
+- import_playbook: 'service/machine.yml'

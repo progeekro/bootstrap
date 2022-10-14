@@ -1,0 +1,68 @@
+---
+
+- name: Import global handlers
+  import_role:
+    name: 'global_handlers'
+
+- name: Install packages needed for HDD Temp
+  package:
+    name: '{{ hddtemp_packages }}'
+    state: present
+  register: hddtemp__register_packages
+  until: hddtemp__register_packages is succeeded
+  when: hddtemp__enabled | bool
+
+- name: Disable default systemctl hddtemp service
+  ansible.builtin.systemd:
+    name: hddtemp
+    state: stopped
+    enabled: no
+
+# HDDTemp may not detect Temperature Sensors for SSDs, add manual entries
+- name: Add manual entries to /etc/hddtemp.db
+  lineinfile:
+    path: "/etc/hddtemp.db"
+    regexp: "^{{item}}"
+    line: "{{ item }}"
+    state: present
+  loop: "{{ hddtemp__manual_entries|list }}"
+  when: hddtemp__enabled | bool
+  notify: Restart hddtemp
+
+- name: Detect available disk devices
+  shell:
+    cmd: "lsblk -ndo name,mountpoint,ro --include '8,179,259' | awk '/^[a-z]{3,}+/gm && !/[./]/ && /0$/{print $1}'"
+  register: lsblk_devices
+
+- name: Make sure that Ansible local facts directory exists
+  file:
+    path: '/etc/ansible/facts.d'
+    state: 'directory'
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+
+- name: Save machine local facts
+  template:
+    src: 'etc/ansible/facts.d/hddtemp.fact.j2'
+    dest: '/etc/ansible/facts.d/hddtemp.fact'
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+  notify: [ 'Refresh host facts' ]
+  tags: [ 'meta::facts' ]
+
+- name: Creates @reboot CRON entry for HDDTemp instances
+  cron:
+    name: "Load hddtemp at reboot for port {{ hddtemp__port+hddtemp_num_instances }}"
+    special_time: reboot
+    job: "/usr/sbin/hddtemp -d /dev/sd[{{ item }}] --unit={{ hddtemp__display_temp_unit }} --listen={{ hddtemp__interface }} --port={{ hddtemp__port+hddtemp_num_instances }}"
+  loop:
+    "{{ ansible_local.hddtemp.device_letters }}"
+  loop_control:
+    index_var: hddtemp_num_instances
+    label: "job: /usr/sbin/hddtemp -d /dev/sd[{{ item }}]"
+  when: hddtemp__enabled | bool and ansible_local.hddtemp.device_letters is defined
+
+- name: Update Ansible facts if they were modified
+  meta: 'flush_handlers'

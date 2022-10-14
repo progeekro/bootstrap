@@ -1,0 +1,15 @@
+---
+
+- name: Manage time zone configuration
+  collections: [ 'progeek.bootstrap' ]
+  hosts: [ 'all_hosts', 'service_tzdata' ]
+  become: True
+
+  environment: '{{ inventory__environment | d({})
+                   | combine(inventory__group_environment | d({}))
+                   | combine(inventory__host_environment  | d({})) }}'
+
+  roles:
+
+    - role: tzdata
+      tags: [ 'role::tzdata', 'skip::tzdata' ]

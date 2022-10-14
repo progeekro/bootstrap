@@ -1,0 +1,26 @@
+---
+
+# Enable or disable time zone management using the `tzdata` role.
+tzdata__enabled: True
+
+# Specify timezone in the form of 'Area/Zone'. Use `timedatectl
+# list-timezones` to see a list of possible values. To set the UTC timezone,
+# specify it as 'Etc/UTC'.
+tzdata__timezone: '{{ ansible_local.tzdata.timezone | d("Etc/UTC") }}'
+
+# List of the APT packages to install for time zone support.
+tzdata__base_packages: [ 'tzdata' ]
+
+# List of additional APT packages to install with the ``tzdata`` package.
+tzdata__packages: []
+
+# List of the default `systemd` service units which should be
+# restarted when time zone is changed. Only currently active services will be
+# restarted.
+tzdata__restart_default_services:
+  - 'cron.service'
+  - 'rsyslog.service'
+
+# List of additional `systemd` service units which should be restarted
+# when time zone is changed.
+tzdata__restart_services: []

@@ -1,0 +1,22 @@
+---
+
+- name: Manage HP ProLiant MicroServer Gen8 servers
+  collections: [ 'progeek.bootstrap' ]
+  hosts: [ 'service_hp_microserver_gen8' ]
+  become: True
+
+  environment: '{{ inventory__environment | d({})
+                   | combine(inventory__group_environment | d({}))
+                   | combine(inventory__host_environment  | d({})) }}'
+
+  roles:
+
+    - role: apt
+      tags: [ 'role::apt', 'skip::apt' ]
+      apt__dependent_keys:
+        - '{{ hp__dependent_ams_repositoy_key }}'
+      apt__dependent_repositories:
+        - '{{ hp__dependent_mcp_repo }}'
+
+    - role: hp_microserver_gen8
+      tags: [ 'role::hp_microserver_gen8', 'skip::hp_microserver_gen8' ]

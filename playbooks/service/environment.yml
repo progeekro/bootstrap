@@ -1,0 +1,15 @@
+---
+
+- name: Manage system environment variables
+  collections: [ 'progeek.bootstrap' ]
+  hosts: [ 'all_hosts', 'service_environment' ]
+  become: True
+
+  environment: '{{ inventory__environment | d({})
+                   | combine(inventory__group_environment | d({}))
+                   | combine(inventory__host_environment  | d({})) }}'
+
+  roles:
+
+    - role: environment
+      tags: [ 'role::environment', 'skip::environment' ]

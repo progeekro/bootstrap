@@ -1,0 +1,33 @@
+#!{{ ansible_python['executable'] }}
+# -*- coding: utf-8 -*-
+
+from __future__ import print_function
+from json import loads, dumps
+from sys import exit
+import os
+
+# Workaround to allow Jinja template inside of a Python script
+"""
+{% set bootstrap__tpl_facts = {} %}
+
+{% set _ = bootstrap__tpl_facts.update({ "configured": True }) %}
+
+{% set _ = bootstrap__tpl_facts.update({ "enabled": 
+    bootstrap__enabled | bool }) %}
+
+{% set _ = bootstrap__tpl_facts.update({ "swapStatus": 
+    bootstrap_swapon_show.stdout }) %}
+
+{% set _ = bootstrap__tpl_facts.update({ "swapEnabled": 
+    bootstrap__swap_enabled | bool }) %}
+
+{% set _ = bootstrap__tpl_facts.update({ "tmpEnabled": 
+    bootstrap__tmp_enabled | bool }) %}
+
+
+"""
+
+output = loads('''{{ bootstrap__tpl_facts | to_nice_json }}''')
+
+
+print(dumps(output, sort_keys=True, indent=4))

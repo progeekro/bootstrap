@@ -1,0 +1,24 @@
+---
+
+- name: K3S deploy
+  hosts: [ 'k3s_cluster' ]
+  collections: []
+  gather_facts: true
+  become: true
+  environment: '{{ inventory__environment | d({})
+                   | combine(inventory__group_environment | d({}))
+                   | combine(inventory__host_environment  | d({})) }}'
+
+  pre_tasks:
+    - name: Check if the node role is set
+      assert:
+        that: k3s_node_role != ""
+        fail_msg: To setup this node you must select his role, `controller` or `worker`
+        success_msg: This node i set as '{{ k3s_node_role }}'
+
+
+  roles:
+    - role: k3s
+      tags: [ 'k3s', 'skip::k3s' ]
+
+...

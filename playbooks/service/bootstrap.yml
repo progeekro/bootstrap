@@ -1,0 +1,14 @@
+---
+
+- name: Bootstrap the hosts
+  hosts: [ 'all_hosts' ]
+  collections: [ 'progeek.bootstrap' ]
+  gather_facts: true
+  become: true
+  environment: '{{ inventory__environment | d({})
+                   | combine(inventory__group_environment | d({}))
+                   | combine(inventory__host_environment  | d({})) }}'
+
+  roles:
+    - role: bootstrap
+      tags: [ 'role::bootstrap', 'skip::bootstrap' ]

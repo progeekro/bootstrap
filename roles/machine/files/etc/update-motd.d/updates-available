@@ -1,0 +1,11 @@
+#!/bin/sh
+
+stamp="/var/lib/update-notifier/updates-available"
+
+notify_outdated_file="/usr/share/update-notifier/notify-updates-outdated"
+
+[ -f ${notify_outdated_file} ] || exit 0
+
+[ ! -r "$stamp" ] || cat "$stamp"
+
+find $stamp -newermt 'now-7 days' 2> /dev/null | grep -q -m 1 '.' || ${notify_outdated_file}

@@ -1,0 +1,176 @@
+---
+
+# Enable or disable support for managing static machine information and MOTD.
+machine__enabled: True
+
+# List of APT packages that are default to this role
+machine__packages_default:
+  - lm-sensors
+  - smartmontools
+
+# List user specified of APT packages to install on this role
+machine__packages_extra: []
+
+# Final list of APK packages that will be installed on this role
+machine__packages: '{{ q("flattened", machine__packages_default + machine__packages_extra) }}'
+
+# Machine information
+
+# Human-readable name of the organization that's responsible for this machine.
+machine__organization: ''
+
+# Human-readable contact information for this machine - e-mail, phone number or
+# an URL to a web page about a person or team responsible for this host.
+machine__contact: ''
+
+# Human-readable hostname for this machine.
+machine__pretty_hostname: ''
+
+# Set the system icon name to NAME.
+# The icon name is used by some graphical applications to visualize this
+# host. The icon name should follow the Icon Naming Specification[1].
+# Pass an empty string to reset the icon name to the default value,
+# which is determined from chassis type (see below) and possibly other parameters.
+machine__icon_name: ''
+
+# Set the chassis type to TYPE. The chassis type is used by some graphical applications to visualize the
+# host or alter user interaction. Currently, the following chassis types are defined: "desktop", "laptop",
+# "server", "tablet", "handset", "watch", "embedded", as well as the special chassis types "vm" and
+# "container" for virtualized systems that lack an immediate physical chassis.
+machine__chassis: ''
+
+# Set the deployment environment description.  ENVIRONMENT must be a single word without any control
+# characters. One of the following is suggested: "development", "integration", "staging", "production".
+# Pass an empty string to reset to the default empty value.
+machine__deployment: 'production'
+
+# Set the location string for the system, if it is known.  LOCATION should be a human-friendly, free-form
+# string describing the physical location of the system, if it is known and applicable. This may be as
+# generic as "Berlin, Germany" or as specific as "Left Rack, 2nd Shelf".
+# Pass an empty string to reset to the default empty value.
+machine__location: ''
+
+# String or YAML text block with the welcome message stored in the
+# `/etc/motd` configuration file.
+machine__motd: ''
+
+# Specify the state of the `/etc/motd` file, either ``present`` (the file
+# exists) or ``absent`` (the file will be removed).
+machine__etc_motd_state: '{{ "present" if machine__motd | d() else "absent" }}'
+
+# Directory which contains scripts that generate the dynamic MOTD.
+machine__motd_update_dir: '/etc/update-motd.d'
+
+# DIrectory witch contains aditional scripts and tools for update-motd.d
+machine__motd_update_aditional_libs_dir: '/var/local/machine'
+
+# Configuration of the `/etc/issue` file
+
+# This variable controls if the role should manage the `/etc/issue`
+# configuration file. If ``present``, the role will divert the distribution file
+# and generate a custom one; if ``absent``, the role will revert the diverted
+# version and will not modify it.
+machine__etc_issue_state: 'present'
+
+# Path to the Jinja2 template used to generate the `/etc/issue`
+# configuration file, relative to the `templates/` directory of this role.
+machine__etc_issue_template: 'etc/issue.j2'
+
+# Dynamic Message Of The Day
+# These variables control the shell scripts that generate the dynamic MOTD.
+
+# The list of the default MOTD scripts managed by the role.
+machine__motd_default_scripts:
+  - name: 'sysinfo'
+    weight: 20
+    src: 'etc/update-motd.d/systeminfo'
+    state: 'present'
+  - name: 'uptime'
+    weight: 20
+    src: 'etc/update-motd.d/uptime'
+    state: 'present'
+  - name: 'diskspace'
+    weight: 35
+    src: 'etc/update-motd.d/diskspace'
+    state: 'present'
+  - name: 'diskstatus'
+    weight: 36
+    src: 'etc/update-motd.d/diskstatus'
+    state: 'present'
+  - name: 'services'
+    weight: 40
+    src: 'etc/update-motd.d/services'
+    state: 'present'
+  - name: 'fail2ban'
+    weight: 50
+    src: 'etc/update-motd.d/fail2ban'
+    state: 'present'
+  - name: 'fail2ban-status'
+    weight: 50
+    src: 'etc/update-motd.d/fail2ban-status'
+    state: 'present'
+  - name: 'updates-available'
+    weight: 90
+    src: 'etc/update-motd.d/updates-available'
+    state: 'present'
+  - name: 'release-upgrade'
+    weight: 91
+    src: 'etc/update-motd.d/release-upgrade'
+    state: 'present'
+  - name: 'unattended-upgrades'
+    weight: 92
+    src: 'etc/update-motd.d/unattended-upgrades'
+    state: 'present'
+  - name: 'overlayroot'
+    weight: 97
+    src: 'etc/update-motd.d/overlayroot'
+    state: 'present'
+  - name: 'fsck-at-reboot'
+    weight: 98
+    src: 'etc/update-motd.d/fsck-at-reboot'
+    state: 'present'
+  - name: 'reboot-required'
+    weight: 98
+    src: 'etc/update-motd.d/reboot-required'
+    state: 'present'
+
+# The list of the MOTD scripts which should be present on all hosts in the
+# Ansible inventory.
+machine__motd_scripts: []
+
+# The list of the MOTD scripts which should be present on hosts in a specific
+# Ansible inventory group.
+machine__motd_group_scripts: []
+
+# The list of the MOTD scripts which should be present on specific hosts in the
+# Ansible inventory.
+machine__motd_host_scripts: []
+
+# The list which combines configuration of the MOTD scripts which is passed to
+# the Ansible tasks.
+machine__motd_combined_scripts: '{{ machine__motd_default_scripts
+                                    + machine__motd_scripts
+                                    + machine__motd_group_scripts
+                                    + machine__motd_host_scripts }}'
+
+###[ Message of the day Services overrides ]#######################################################
+# The "40-services" service is from another repository with a default set of services to include
+# within the Message of the Day screen.  This section to define a set of services to replace
+# the services which are hard coded.
+
+services_list_override:
+  - "fail2ban"
+  - "netdata"
+  - "smartd"
+  - "postfix"
+
+# Enable or disable support for machine tweaks.
+machine__tweaks_enabled: True
+
+# aditional paths for machine tweak
+machine___tweak_paths:
+  - /var/local/machine/lib
+  - /var/local/machine/plugins
+
+# Enable of Disable support for nano tweak
+machine__tweak_nano: True

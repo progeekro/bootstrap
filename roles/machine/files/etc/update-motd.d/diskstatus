@@ -1,0 +1,256 @@
+#!/usr/bin/env bash
+
+# NAME:      36-diskstatus.sh
+#
+# DESCRIPTION: Report status of each drive installed, incuding temperature as
+#              reported by HDDtemp and drive testing status from smartctl.
+#              if HDDtemp not available or no temp found the script will 
+#              fallback to smartctl scrapes for temperature information
+#
+# Originally Based on: https://github.com/yboetz/motd
+#
+# AUTHOR     : Richard J. DURSO
+# DATE       : 07/30/2022
+# VERSION    : 1.8.0
+##############################################################################
+
+#set -euo pipefail
+LC_ALL=C
+LC_NUMERIC=C
+
+include () {
+    [[ -f "$1" ]] && source "$1"
+}
+
+include /var/local/machine/plugins/colors.sh
+include /var/local/machine/plugins/functions.sh
+
+#---[ Variables and Constants ]-----------------------------------------------
+# Max Temperature (red color)
+MAX_TEMP_C=45
+MAX_TEMP_F=113
+
+# Warning Temperature, percentage of MAX_TEMP
+WARN_PERCENT=85
+
+# set column width
+COLUMNS=2
+
+# hddtemp daemon connection info. Port numbers will be incremented to look for
+# additional instances of hddtemp.
+hddtemp_host=localhost
+hddtemp_port=7634
+
+# hddtemp can already report F or C temperatures for SATA devices.  If this script
+# grabs a temp from smartctl and it is reported in "C" set the following to 
+# if you want that value converted to F.
+convert_c_to_f=/bin/false
+
+# logfiles to check
+logfiles='/var/log/syslog /var/log/syslog.1'
+#------------------------------------------------------------------------------
+
+#---[ You can updates these ]--------------------------------------------------
+# Types of disks to look for. Used by awk to define disk by-id types to include
+# IDE/SATA - you might add another for usb "usb-".
+findthese="ata-|scsi-SATA_|nvme-"
+
+# This is used by awk to remove unwanted disk devices which matched above.
+ignorethese="ata-Samsung|nvme-(eui|nvme).*"
+
+# This is used by sed to remove text from disk device names. This does not alter
+# device selection like ones above.  This just helps to make disk device names
+# nicer (smaller).
+sed_filter="s/^scsi-SATA_//; s/^ata-//; s/Series_//; s/^nvme-//;"
+#-------------------------------------------------------------------------------
+
+#---[ Do Not Update These ]-----------------------------------------------------
+# These are not disks: partitions, cd-roms, etc.
+notdisks="part[0-9]|sr[0-9]|/dm-|/md-|total"
+
+# Collect all disk devices which don't match "notdisks"
+alldisks=$(find /dev/disk/by-id/ -type l -printf "%p %l\n" | sort -k 2  | awk -F/ -v a="$notdisks" '$0 !~ a  { print }')
+
+# Dynamically generate simple disk names available (sda, sdb, sdc, ...)  these change if disks are removed
+disksalias=$(echo "${alldisks[@]}" | awk -F/ -v a="$findthese" -v b="$ignorethese" '$0 ~ a && $0 !~ b { print $7 }' | uniq);disksalias=($disksalias)
+
+# Capture Raw Disk Data to Work on.
+# Assumption: Last 15 chars can be used to find duplicate device. Combination of device alias and serial number.
+# This will remove any duplicate devices.
+rawdisks=$(echo "${alldisks[@]}" | awk -F'[/ ]' -v a="$findthese" -v b="$ignorethese" '$0 ~ a && $0 !~ b { print $5}' | rev | uniq -w 15 | rev);rawdisks=($rawdisks)
+
+# Clean-up disk names to display with sed_filter 
+disks=$(printf '%s\n' "${rawdisks[@]}"|sed "$sed_filter");disks=($disks)
+
+# Grab a shorter subset of the name. It will return everything to the LEFT of the right-most "_"
+shortnames=$(printf '%s\n' "${disks[@]}" | sed -r 's/^(.*)_.*$/\1/');shortnames=($shortnames)
+
+# Dynamically grab last 4 digits of disk serial number
+diskserials=$(printf '%s\n' "${disks[@]}"| sed -r 's/.*(....)$/\1/');diskserials=($diskserials)
+#-------------------------------------------------------------------------------
+
+# get all lines with smartd entries from syslog
+lines=$(tac $logfiles 2>/dev/null | grep -hiP 'smartd.*previous self-test')
+
+# use nc to query temps from each hddtemp daemon instance, echo needed to get NC to return data
+fetch_hddtemp=$(echo -n | nc $hddtemp_host $hddtemp_port |sed 's/|//m' | sed 's/||/ \n/g')
+
+# See if we got any hddtemp data to work with
+if [[ ! -z $fetch_hddtemp ]]; then
+  while [[ -n $fetch_hddtemp ]]
+  do
+    hddtemp+=$fetch_hddtemp
+    hddtemp_port=$((hddtemp_port+1))
+    fetch_hddtemp=$(echo -n | nc $hddtemp_host $hddtemp_port |sed 's/|//m' | sed 's/||/ \n/g')
+  done
+else
+  # This value is not tested for, might be handy in debugging
+  hddtemp="none"
+fi
+
+out=""
+
+# generate data to display about devices
+for i in "${!disksalias[@]}"; do  #for every /dev/sdX device name
+    # Get smartd testing status
+    # Determine all possible names for the disk device
+    possible_names=$(echo "${alldisks[@]}" | awk -v a=${disksalias[$i]} '$0 ~ a { print $1 }');possible_names=($possible_names)
+
+    for name in "${possible_names[@]}";do
+      result=$(echo "${lines}" | awk -v a=${name} '$0 ~ a {print $(NF-1),$NF; exit 1 }')
+      if [ $? -eq 1 ]; then
+        break
+      fi
+
+      # If no result, see if unexpected results can be found
+      if [ -z ${result} ]; then
+        if [ $(tac $logfiles 2>/dev/null | grep -m 1 -HiP "${name}.*self-test" | grep -ci "skip") -eq 1 ]; then   # Test skipped
+          result="skipped"
+          break
+        fi
+        if [ $(tac $logfiles 2>/dev/null | grep -m 1 -HiP "${name}.*self-test" | grep -ci "in progress") -eq 1 ]; then   # Test in progress
+          result="in progress"
+          break
+        fi
+
+        # Uncomment this to discover other reasons for no test results
+        # If this show nothing, then data has rotated out of where "$logfiles" is checking.
+        # tac $logfiles 2>/dev/null | grep -m 1 -HiP "${name}.*self-test"
+
+        # Still no result, device not being monitored? See if smartctl has a status we can show
+        result=$(smartctl -a /dev/${disksalias[$i]} | awk '/^SMART.*result:/{print $(NF)}')
+      fi
+    done
+
+    # if NVMe device get temp and unit from smartctl
+    if [ $(echo ${disksalias[$i]} | grep -ci "nvme") -eq 1 ]; then
+      # Assume something like:  "Temperature:                        37 Celsius" is returned
+      devicetmp=$(smartctl -A /dev/${disksalias[$i]} | awk '/^Temperature:/{print $2, $3}')
+      temp=$(echo $devicetmp | awk '{print $1}')
+      unit=$(echo $devicetmp | awk '{print substr($2,1,1)}') #Only need 1st character
+
+    # Not nvme see if we have hddtemp data
+    else
+      # Get Temperature and Unit
+      temp=$( (grep "${disksalias[$i]}" <<< "${hddtemp}") | cut -d "|" -f3)
+      # Get The Unit from the temperature
+      unit=$( (grep "${disksalias[$i]}" <<< "${hddtemp}") | cut -d "|" -f4)
+      unit=${unit% } # Trim trailing space if it has it
+
+      # If no temp data collected from hddtemp, fallback to smartctl
+      if [ -z $temp ]; then 
+        # Assume something like:
+        # "194 Temperature_Celsius     0x0022   025   055   000    Old_age   Always       -       25 (Min/Max 22/44)"
+        # "190 Airflow_Temperature_Cel 0x0032   070   056   000    Old_age   Always       -       30"
+        temp=$(smartctl -A /dev/${disksalias[$i]} | awk '/.*Temperature_Cel.*/{print $10}')
+        unit="C"
+      fi
+    fi
+
+    # if we have a temp see if we need to convert to F
+    if [ ! -z $temp ]; then 
+      # See if we need to convert C to F
+      if $($convert_c_to_f)  && ([ $unit == "C" ] || [ $unit == "c" ])
+      then
+        temp=$(expr 9 '*' $temp / 5 + 32)
+        unit="F"
+      fi
+    fi
+
+    # Determine if MAX_TEMP is based on C or F
+    case "${unit}" in
+      "f"|"F")
+        MAX_TEMP=$MAX_TEMP_F 
+      ;;
+      "c"|"C")
+        MAX_TEMP=$MAX_TEMP_C
+      ;;
+      *) # Unknown value
+        MAX_TEMP=0
+        unit=""
+      ;;
+    esac;
+
+    # HDDTEMP can return an error if a drive was hot-swapped since restart
+    # Deamon would need to be restarted to pickup new drive
+    case "${temp}" in
+      "ERR")
+        color=$RED
+      ;;
+      "UNK")
+        color=$DIM
+      ;;
+      "32"|"0") # 0C or 32F device likley has no actual temp sensor
+        temp="N/A"
+        color=$DIM
+        unit=""
+      ;;
+      *) # A temperature value
+        if [[ "${temp}" -gt "${MAX_TEMP}" ]]; then
+            color=$RED
+        else
+          WARN_TEMP=$(expr ${MAX_TEMP} '*' ${WARN_PERCENT} /  100)
+          if [[ ${temp} -gt ${WARN_TEMP} ]]; then
+            color=$YLW
+          else          
+            color=$GRN
+          fi
+        fi
+      ;;
+    esac;
+
+    # Set color based on known or unknown status
+    case "${result}" in
+      "without error"|"PASSED")
+        status_color=$GRN
+      ;;
+      "with error"|"FAILED!")
+        status_color=$RED
+      ;;
+      "skipped")
+        status_color=$YLW
+      ;;
+      "in progress")
+        status_color=$YLW
+      ;;
+      "a reset")
+        result="interrupted"
+        status_color=$YLW
+      ;;
+      *)
+        result="untested[${result}]"
+        status_color=$DIM
+      ;;
+    esac;
+
+    # print temp & smartd error
+    out+="${shortnames[$i]}_${diskserials[$i]} (${disksalias[$i]}):,${color}${temp}${unit}${DEF} | ${status_color}${result}${DEF},"
+    # insert \n every $COLUMNS column
+    if [ $((($i+1) % $COLUMNS)) -eq 0 ]; then
+        out+="\n"
+    fi
+done
+out+="\n"
+
+printf "\ndisk status:\n"
+printf "$out" | column -ts $',' | sed -e 's/^/  /'

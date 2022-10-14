@@ -1,0 +1,50 @@
+---
+
+# Enable or disable support for local device partition
+parted__enabled: '{{ True
+                    if (((ansible_system_capabilities_enforced | d()) | bool and
+                         "cap_sys_admin" in ansible_system_capabilities) or
+                        not (ansible_system_capabilities_enforced | d(True)) | bool)
+                    else False }}'
+
+# List of APT packages to install parted and wipe applications
+parted__base_packages: [ 'parted', 'wipe' ]
+
+# List of additional APT packages
+parted__packages: []
+
+# List of dicts with partitions yo need setup. The dicts have the same format
+# that ansible parted module attributes (device attribute is required).
+# Example:
+#
+# parted_disks:
+#   - device: /dev/sdb
+#     align: optimal
+#     number: 1
+#     part_type: primary
+#     part_start: 0%
+#     part_end: 100%
+#     flags: [ lvm ]
+#     state: present
+#     label: 
+#     name:
+#     unit: 
+
+parted_disks: []
+
+# Dict with the defaults options to use if no other ones are specified in
+# the `parted_disk` variable. The members of the dict are the same attributes
+# that the ones expected by the ansible parted module
+
+parted_disks_defaults: {}
+
+# Indicate `parted_disks` must be loaded also from host variables. Any host
+# variable that begins with "parted_disks_*" and contains the necessary
+# attributes will be loaded as an item to manage by the role. The variables must
+# follow the structure detailed before for `parted_disks`
+
+parted_disks_load_from_hostvars: False
+
+parted_disks_to_manage: >-
+    {{ parted_disks + ((parted_disks_load_from_hostvars | bool) | 
+        ternary(parted_disks_hostvars | default([]) | flatten, [])) }}

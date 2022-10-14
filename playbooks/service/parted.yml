@@ -1,0 +1,15 @@
+---
+
+- name: Manage local disks and parted management
+  collections: [ 'progeek.bootstrap' ]
+  hosts: [ 'service_parted' ]
+  become: True
+
+  environment: '{{ inventory__environment | d({})
+                   | combine(inventory__group_environment | d({}))
+                   | combine(inventory__host_environment  | d({})) }}'
+
+  roles:
+
+    - role: parted
+      tags: [ 'role::parted', 'skip::parted' ]

@@ -1,0 +1,41 @@
+---
+
+# Enable or disable support for HP t620 Quad Core TC
+hp__t620_enabled: True
+
+# Enable or disable support for B43 driver
+hp__b43_driver_enabled: False
+
+# documentation on: https://help.ubuntu.com/community/WifiDocs/Driver/bcm43xx
+hp__b43_driver_package:
+  - firmware-b43-installer
+
+# Enable Non-free APT packages
+hp__t620_nonfree_packages_enables: True
+
+# List of APT packages that are default to this role
+hp__t620_packages_default:
+  - amd64-microcode
+  - firmware-misc-nonfree
+  - firmware-amd-graphics
+  - firmware-realtek
+
+# List user specified of APT packages to install on this role
+hp__t620_packages_extra: []
+
+# Final list of APT packages that will be installed on this role
+hp__t620_packages: '{{ q("flattened", hp__t620_packages_default + hp__t620_packages_extra, hp__b43_driver_package if hp__b43_driver_enabled|bool else [] ) }}'
+
+# the file is provided by: https://github.com/winterheart/broadcom-bt-firmware
+hp__broadcom_bt_firmware:
+  - https://github.com/winterheart/broadcom-bt-firmware/releases/download/v12.0.1.1105_p3/broadcom-bt-firmware-10.1.0.1115.deb
+
+# List of DEB packages that are default to this role
+hp__t620_deb_packages_default: []
+  
+
+# List user specified of DEB packages to install on this role
+hp__t620_deb_packages_extra: []
+
+# Final list of DEB packages that will be installed on this role
+hp__t620_deb_packages: '{{ q("flattened", hp__t620_deb_packages_default + hp__t620_deb_packages_extra, hp__broadcom_bt_firmware if hp__b43_driver_enabled else [] ) }}'

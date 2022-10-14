@@ -1,0 +1,33 @@
+---
+
+# Enable or disable support for bootstrap
+bootstrap__enabled: True
+
+# List of APT packages that are default to this role
+bootstrap__apt_packages_default:
+  - htop                        # interactive processes viewer
+  - cgroup-tools                # control and monitor control groups (tools)
+  - net-tools                   # NET-3 networking toolkit
+  - tcpdump                     # command-line network traffic analyzer
+  - wget                        # retrieves files from the web
+  - openssl                     # Secure Sockets Layer toolkit - cryptographic utility
+  - curl                        # command line tool for transferring data with URL syntax
+  - jq                          # lightweight and flexible command-line JSON processor
+  - lnav                        # ncurses-based log file viewer
+  - apt-transport-https         # transitional package for https support
+  - ca-certificates             # Common CA certificates
+  - software-properties-common  # manage the repositories that you install software from (common)
+  - gnupg                       # GNU privacy guard - a free PGP replacement
+  - util-linux                  # miscellaneous system utilities
+
+# List user specified of APT packages to install on this role
+bootstrap__apt_packages_extra: []
+
+# Final list of APT packages that will be installed on this role
+bootstrap__apt_packages: '{{ q("flattened", bootstrap__apt_packages_default, bootstrap__apt_packages_extra) }}'
+
+# Enable or disable swap suport
+bootstrap__swap_enabled: False
+
+# Enable or disable swap suport
+bootstrap__tmp_enabled: True

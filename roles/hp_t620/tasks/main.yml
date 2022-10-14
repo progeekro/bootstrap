@@ -1,0 +1,20 @@
+---
+
+- name: Import global handlers
+  import_role:
+    name: 'global_handlers'
+  
+- name: Install the APT packages
+  apt:
+    name: '{{ hp__t620_packages }}'
+    state: "{{ 'latest' if hp__t620_enabled | bool else 'absent' }}"
+    update_cache: yes
+  register: register_apt_packages
+  until: register_apt_packages is succeeded
+
+- name: Install the DEB packages
+  apt:
+    deb: '{{ item }}'
+  with_items: '{{ hp__t620_deb_packages }}'
+  register: register_deb_packages
+  until: register_deb_packages is succeeded

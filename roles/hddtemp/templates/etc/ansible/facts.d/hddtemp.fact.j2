@@ -1,0 +1,46 @@
+#!{{ ansible_python['executable'] }}
+# -*- coding: utf-8 -*-
+
+from __future__ import print_function
+from json import loads, dumps
+from sys import exit
+import os
+
+# Workaround to allow Jinja template inside of a Python script
+"""
+{% set hddtemp__tpl_facts = {} %}
+{% set device_letters = [] %}
+{% set disk_devices = lsblk_devices.stdout.splitlines()|map('trim')|list %}
+
+# Get the last device letter from each active device, this is needed for hddtmp monitoring
+# If "disk_devices" contains ['sda','sdb','sdc'] then device_letters is "abc"
+# Devices ending in numbers like nvme1 which are not supported are skipped
+{% if hddtemp__enabled | bool %}
+{%  for item in disk_devices %}
+{%      if item[-1] | lower | regex_search("[a-z]") %}
+{%          set _ = device_letters.append(item[-1]) %}
+{%      endif %}
+{%  endfor %}
+{%  set device_letters = device_letters|join('') %}
+{% endif %}
+
+{% set _ = hddtemp__tpl_facts.update({ "configured": True }) %}
+
+{% set _ = hddtemp__tpl_facts.update({ "enabled": 
+    hddtemp__enabled | bool }) %}
+
+{% set _ = hddtemp__tpl_facts.update({ "disk_devices":
+    disk_devices }) %}
+
+# hddtemp can only take a limited number of devices; which is a limit on the number of
+# parameters which can be passed via the command line.  Break up the disk device list 
+# into chunks the size defined by "hddtemp__num_devices"
+{% set _ = hddtemp__tpl_facts.update({ "device_letters":
+    device_letters | regex_findall('.{1,' + hddtemp__num_devices|string +'}') }) %}
+
+"""
+
+output = loads('''{{ hddtemp__tpl_facts | to_nice_json }}''')
+
+
+print(dumps(output, sort_keys=True, indent=4))

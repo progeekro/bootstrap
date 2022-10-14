@@ -1,0 +1,6 @@
+---
+
+- name: Restart lldpd
+  ansible.builtin.service:
+    name: 'lldpd'
+    state: 'restarted'

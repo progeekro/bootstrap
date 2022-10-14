@@ -1,0 +1,22 @@
+---
+
+- name: Import global handlers
+  import_role:
+    name: 'global_handlers'
+
+- name: Install HP MCP packages
+  apt:
+    name: "{{ item }}"
+    state: "{{ 'latest' if hp__microserver_gen8_enabled | bool else 'absent' }}"
+  with_items: "{{ hp__ams_packages }}"
+  register: hp__register_base_packages
+  until: hp__register_base_packages is succeeded
+
+- name: Install binary firmware for QLogic
+  apt:
+    name: "{{ hp__qlogic_network_driver_packages }}"
+    state: latest
+    update_cache: yes
+  register: hp__register_base_binary
+  until: hp__register_base_binary is succeeded
+  when: hp__qlogic_network_driver_enabled | bool

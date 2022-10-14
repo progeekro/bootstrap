@@ -1,0 +1,37 @@
+---
+
+# Enable or disable support for HP ProLiant MicroServer Gen8
+hp__microserver_gen8_enabled: True
+
+# List of APT packages that are default to this role
+hp__ams_packages_default:
+  - hponcfg
+  - hp-ams
+  - ssacli
+  - ssaducli
+  - ssa
+
+# List user specified of APT packages to install on this role
+hp__ams_packages_extra: []
+
+# Final list of APT packages that will be installed on this role
+hp__ams_packages: '{{ q("flattened", hp__ams_packages_default + hp__ams_packages_extra) }}'
+
+# Enable the install for binary firmware for QLogic Intelligent Ethernet (3000 and 3100 Series)
+hp__qlogic_network_driver_enabled: True
+
+hp__qlogic_network_driver_packages:
+  - firmware-netxen
+
+hp__dependent_ams_repositoy_key:
+  - url: https://downloads.linux.hpe.com/SDR/hpPublicKey2048.pub
+    state: "{{ 'present' if hp__microserver_gen8_enabled | bool else 'absent' }}"
+  - url: http://downloads.linux.hpe.com/SDR/hpPublicKey2048_key1.pub
+    state: "{{ 'present' if hp__microserver_gen8_enabled | bool else 'absent' }}"
+  - url: https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub
+    state: "{{ 'present' if hp__microserver_gen8_enabled | bool else 'absent' }}"
+
+hp__dependent_mcp_repo:
+  - repo: 'deb http://downloads.linux.hpe.com/SDR/repo/mcp bionic/10.80 non-free'
+    filename: hp_mcp
+    state: "{{ 'present' if hp__microserver_gen8_enabled | bool else 'absent' }}"

@@ -1,0 +1,9 @@
+#!{{ ansible_python['executable'] }}
+# -*- coding: utf-8 -*-
+
+from __future__ import print_function
+from json import loads, dumps
+
+output = loads('''{{ register_timedatectl.stdout | from_json | to_nice_json }}''')
+
+print(dumps(output, sort_keys=True, indent=4))

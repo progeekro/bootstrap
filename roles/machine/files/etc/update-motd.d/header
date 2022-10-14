@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+. /etc/update-motd.d/colors
+
+[ -r /etc/update-motd.d/os-release ] && . /etc/update-motd.d/os-release
+
+if [ -z "${PRETTY_NAME-}" ] && [ -r /etc/os-release  ]; then
+     source /etc/os-release
+fi
+
+re='(.*\()(.*)(\).*)'
+if [[ $PRETTY_NAME =~ $re ]]; then
+    PRETTY_NAME=$(printf "%s%s%s%s%s" "${BASH_REMATCH[1]}" "${YELLOW}" "${BASH_REMATCH[2]}" "${NONE}" "${BASH_REMATCH[3]}")
+fi
+
+echo -e "  "$PRETTY_NAME "(kernel "$(uname -r)")\n"
+
+# Update the information for next time
+printf "PRETTY_NAME=\"%s\"" "$PRETTY_NAME" > /etc/update-motd.d/os-release &
+
+#!/bin/bash
+
+. /etc/update-motd.d/colors
+
+n=$(apt-get -qq --just-print dist-upgrade | cut -f 2 -d " " | sort -u | wc -l)
+if [[ $n -gt 0 ]]; then
+    printf $LIGHT_RED
+    printf "  You have %s packages waiting for upgrades." "$n"
+    printf $NONE"\n\n"
+fi
+n=$(apt-get -qq --just-print autoremove | cut -f 2 -d " " | sort -u | wc -l)
+if [[ $n -gt 0 ]]; then
+    printf $YELLOW
+    printf "  You have %s packages that were automatically installed and are not needed anymore." "$n"
+    printf $NONE"\n\n"
+fi
