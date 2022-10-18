@@ -1,8 +1,9 @@
 ---
 
 - name: Upgrade a machine using APT
+  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
+                 'progeekro.roles02', 'progeekro.roles03' ]
   hosts: [ 'all_hosts' ]
-  collections: [ 'progeekro.bootstrap' ]
   become: True
   gather_facts: False
 

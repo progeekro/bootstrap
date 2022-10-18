@@ -1,7 +1,8 @@
 ---
 
 - name: Manage hddtemp, a small utility (with daemon) that gives the hard-drive temperature via S.M.A.R.T.
-  collections: [ 'progeekro.bootstrap' ]
+  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
+                 'progeekro.roles02', 'progeekro.roles03' ]
   hosts: [ 'all_hosts', 'service_hddtemp' ]
   become: True
 

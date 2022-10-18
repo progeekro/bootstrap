@@ -1,7 +1,8 @@
 ---
 
 - name: Manage local device and bind mounts
-  collections: [ 'progeekro.bootstrap' ]
+  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
+                 'progeekro.roles02', 'progeekro.roles03' ]
   hosts: [ 'service_mount' ]
   become: True
 

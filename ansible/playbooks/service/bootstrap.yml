@@ -2,7 +2,8 @@
 
 - name: Bootstrap the hosts
   hosts: [ 'all_hosts' ]
-  collections: [ 'progeekro.bootstrap' ]
+  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
+                 'progeekro.roles02', 'progeekro.roles03' ]
   gather_facts: true
   become: true
   environment: '{{ inventory__environment | d({})

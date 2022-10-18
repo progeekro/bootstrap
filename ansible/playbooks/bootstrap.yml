@@ -1,7 +1,8 @@
 ---
 
 - name: Security assertions
-  collections: [ 'progeekro.bootstrap' ]
+  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
+                 'progeekro.roles02', 'progeekro.roles03' ]
   hosts: [ 'all' ]
   tags: [ 'play::security-assertions' ]
   gather_facts: False
@@ -25,7 +26,8 @@
       delegate_to: 'localhost'
 
 - name: Bootstrap Python support on a host
-  collections: [ 'progeek.bootstrap' ]
+  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
+                 'progeekro.roles02', 'progeekro.roles03' ]
   hosts: [ 'all_hosts', 'service_bootstrap' ]
   strategy: linear
   gather_facts: False

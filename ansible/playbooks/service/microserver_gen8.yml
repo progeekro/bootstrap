@@ -1,7 +1,8 @@
 ---
 
 - name: Manage HP ProLiant MicroServer Gen8 servers
-  collections: [ 'progeekro.bootstrap' ]
+  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
+                 'progeekro.roles02', 'progeekro.roles03' ]
   hosts: [ 'service_hp_microserver_gen8' ]
   become: True
 

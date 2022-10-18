@@ -1,7 +1,8 @@
 ---
 
 - name: Manage local disks and parted management
-  collections: [ 'progeekro.bootstrap' ]
+  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
+                 'progeekro.roles02', 'progeekro.roles03' ]
   hosts: [ 'service_parted' ]
   become: True
 

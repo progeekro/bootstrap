@@ -69,7 +69,7 @@ tags
 .vscode
 
 
-inventory
+inventory/
 
 ansible.cfg
 get_helm.sh

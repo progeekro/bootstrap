@@ -2,7 +2,8 @@
 
 - name: K3S deploy
   hosts: [ 'k3s_cluster' ]
-  collections: [ 'progeekro.k3s' ]
+  collections: [ 'progeekro.k3s', 'progeekro.roles01',
+                 'progeekro.roles02', 'progeekro.roles03' ]
   gather_facts: true
   become: true
   environment: '{{ inventory__environment | d({})

@@ -1,7 +1,8 @@
 ---
 
 - name: Manage smartmontools package contains two utility programs (smartctl and smartd) to control and monitor storage systems
-  collections: [ 'progeekro.bootstrap' ]
+  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
+                 'progeekro.roles02', 'progeekro.roles03' ]
   hosts: [ 'all_hosts', 'service_smartmontools' ]
   become: True
 
