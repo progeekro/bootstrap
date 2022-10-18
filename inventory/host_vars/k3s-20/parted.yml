@@ -1,0 +1,30 @@
+---
+
+parted_disks_load_from_hostvars: True
+
+parted_disks_k3s20:
+  - device: /dev/sdb
+    number: 1
+    state: present
+    part_start: "0%"
+    part_end: "100%"
+    fstype: ext4
+  - device: /dev/sdc
+    number: 1
+    state: present
+    part_start: "0%"
+    part_end: "100%"
+    fstype: ext4
+  - device: /dev/sde
+    number: 1
+    state: present
+    part_start: "0%"
+    part_end: "100%"
+    fstype: ext4
+  - device: /dev/sdf
+    number: 1
+    state: present
+    part_start: "0%"
+    part_end: "100%"
+    fstype: ext4
+    

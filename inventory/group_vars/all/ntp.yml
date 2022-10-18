@@ -1,0 +1,10 @@
+---
+
+ntp__daemon: chrony
+
+ntp__chrony_cmdport: 323
+
+ntp__servers:
+  - 'time.progeek.ro iburst minpoll 4 maxpoll 5'
+  - 'time.cloudflare.com iburst minpoll 4 maxpoll 5'
+  - 'ro.pool.ntp.org iburst minpoll 4 maxpoll 5'

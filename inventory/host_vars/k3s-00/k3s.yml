@@ -1,0 +1,11 @@
+---
+
+k3s_node_role: controller
+
+k3s_default_server_args: ' --disable local-storage'
+
+k3s_controller_labels:
+  hardware: hp-T620
+  storage: false
+
+...

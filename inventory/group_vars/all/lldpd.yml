@@ -1,0 +1,7 @@
+---
+
+lldpd__daemon_arguments:
+  - '-c' # Enable the support of CDP protocol. (Cisco)
+  - '-e' # Enable the support of EDP protocol. (Extreme)
+  - '-f' # Enable the support of FDP protocol. (Foundry)
+  - '-s' # Enable the support of SONMP protocol. (Nortel)
