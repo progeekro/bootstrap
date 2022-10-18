@@ -2,6 +2,7 @@
 
 - name: Reboot hosts
   hosts: [ 'all_hosts' ]
+  collections: [ 'progeekro.k3s' ]
   become: True
 
   gather_facts: False

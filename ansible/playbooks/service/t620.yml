@@ -1,7 +1,7 @@
 ---
 
 - name: Manage HP ProLiant MicroServer Gen8 servers
-  collections: [ 'progeek.bootstrap' ]
+  collections: [ 'progeekro.bootstrap' ]
   hosts: [ 'service_hp_t620' ]
   become: True
 

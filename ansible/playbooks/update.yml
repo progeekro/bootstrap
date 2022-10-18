@@ -2,6 +2,7 @@
 
 - name: Upgrade a machine using APT
   hosts: [ 'all_hosts' ]
+  collections: [ 'progeekro.bootstrap' ]
   become: True
   gather_facts: False
 

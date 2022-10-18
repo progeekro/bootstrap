@@ -1,7 +1,7 @@
 ---
 
 - name: Security assertions
-  collections: [ 'progeek.bootstrap' ]
+  collections: [ 'progeekro.bootstrap' ]
   hosts: [ 'all' ]
   tags: [ 'play::security-assertions' ]
   gather_facts: False

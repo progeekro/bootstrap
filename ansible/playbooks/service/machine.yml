@@ -1,7 +1,7 @@
 ---
 
 - name: Manage local machine information
-  collections: [ 'progeek.bootstrap' ]
+  collections: [ 'progeekro.bootstrap' ]
   hosts: [ 'all_hosts', 'service_machine' ]
   become: True
 

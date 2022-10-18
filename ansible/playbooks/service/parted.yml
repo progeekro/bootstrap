@@ -1,7 +1,7 @@
 ---
 
 - name: Manage local disks and parted management
-  collections: [ 'progeek.bootstrap' ]
+  collections: [ 'progeekro.bootstrap' ]
   hosts: [ 'service_parted' ]
   become: True
 
