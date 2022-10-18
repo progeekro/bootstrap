@@ -1,5 +1,0 @@
----
-
-ansible_user: progeek
-# ansible_ssh_pass: horizon
-ansible_become_pass: horizon
