@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+# Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Return the prompt symbol to use, colorized based on the return value of the
 # previous command.
 function set_prompt_symbol() {

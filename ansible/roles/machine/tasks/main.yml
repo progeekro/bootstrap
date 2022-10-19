@@ -1,4 +1,9 @@
 ---
+# .. vim: foldmarker=[[[,]]]:foldmethod=marker
+
+# Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+# Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Import global handlers
   import_role:
@@ -22,7 +27,7 @@
   when: machine__enabled | bool
 
 - name: Add/remove diversion of /etc/issue
-  progeek.bootstrap.dpkg_divert:
+  progeekro.bootstrap.dpkg_divert:
     path: '/etc/issue'
     state: '{{ "present"
                if machine__etc_issue_state | d("present") != "absent"

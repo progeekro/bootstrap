@@ -1,4 +1,10 @@
 ---
+# .. vim: foldmarker=[[[,]]]:foldmethod=marker
+
+# Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+# Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Role default lower priority variables
 
 # Dict with the hostvars query parameters. The dict must have the following

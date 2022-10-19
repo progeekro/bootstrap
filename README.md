@@ -28,6 +28,6 @@ project tarballs, Ansible Collections and Python packages. The project uses the
 verify copyright and license information in all files.
 
 [GPL-3.0-or-later]: https://www.gnu.org/licenses/gpl-3.0
-[LICENSES/GPL-3.0-or-later.txt]: https://github.com/progeek/bootstrap/blob/main/LICENSES/GPL-3.0-or-later.txt
+[LICENSES/GPL-3.0-or-later.txt]: https://github.com/progeekro/bootstrap/blob/main/LICENSES/GPL-3.0-or-later.txt
 [spdx-ids]: https://spdx.org/ids
 [reuse-specification]: https://reuse.software/spec/

@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+
+# Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+# Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 #
 # Based on http://git.savannah.gnu.org/cgit/src-highlite.git/tree/src/src-hilite-lesspipe.sh.in
 # by Lorenzo Bettini

@@ -1,4 +1,174 @@
 {
-    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools"
-
+    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
+    "psi-header.config": {
+        "forceToTop": true,
+        "blankLinesAfter": 0,
+        "spacesBetweenYears": false,
+        "license": "GPL-3.0-or-later",
+        "author": "Zaharia Constantin",
+        "authorEmail": "constantin.zaharia@progeek.ro",
+        "company": "ProGeek",
+    },
+    "psi-header.variables": [
+        ["companyWebsite", "https://progeek.ro"]
+    ],
+    "psi-header.changes-tracking": {
+        "isActive": true,
+        "include": [
+            "yml",
+            "yaml",
+            "python",
+            "shellscript"
+        ],
+		"includeGlob": [],
+		"exclude": ["markdown", "json", "jsonc", "jinja"],
+		"excludeGlob": ["./**/*/ignoreme.*", "**/settings.json"],
+		"autoHeader": "autoSave",
+		"enforceHeader": true,
+        "updateLicenseVariables": true
+    },
+    "psi-header.lang-config": [
+        {
+            "language": "yaml",
+            "begin": "",
+            "end": "",
+            "prefix": "# ",
+            "beforeHeader": [
+                "---",
+                "# .. vim: foldmarker=[[[,]]]:foldmethod=marker\n"
+            ],
+            "ignoreLines": [
+                "---"
+            ]
+        },
+        {
+            "language": "yml",
+            "mapTo": "yaml"
+        },
+        {
+            "language": "ansible",
+            "begin": "",
+            "end": "",
+            "prefix": "# ",
+            "beforeHeader": [
+                "---",
+            ],
+            "ignoreLines": [
+                "---"
+            ]  
+        },
+        {
+            "language": "shellscript",
+            "begin": "",
+            "end": "",
+            "prefix": "# ",
+            "beforeHeader": [
+                "#!/usr/bin/env bash\n"
+            ],
+            "ignoreLines": [
+                "#!"
+            ]
+        },
+        {
+			"language": "python",
+			"begin": "###",
+			"prefix": "# ",
+			"end": "###",
+			"blankLinesAfter": 0,
+			"beforeHeader": [
+				"#!/usr/bin/env python3",
+				"# -*- coding:utf-8 -*-\n"
+			],
+            "ignoreLines": [
+                "#!"
+            ]
+		},
+        {
+			"language": "jinja",
+			"begin": "###",
+			"prefix": "# ",
+			"end": "###",
+			"blankLinesAfter": 0,
+			"beforeHeader": [
+				"#!{{ ansible_python['executable'] }}",
+				"# -*- coding:utf-8 -*-\n"
+			],
+            "ignoreLines": [
+                "#!"
+            ]
+		},
+        {
+			"language": "javascript",
+			"begin": "/**",
+			"prefix": " * ",
+			"end": " */",
+			"blankLinesAfter": 2,
+			"forceToTop": false,
+            "ignoreLines": [
+                "/**"
+            ]
+		},
+		{
+			"language": "typescript",
+			"mapTo": "javascript"
+		}
+    ],
+    "psi-header.templates": [
+        {
+            "language": "yaml",
+            "template": [
+                "Copyright (C) <<yeartoyear(2021,now)>> <<author>> <constantin.zaharia@progeek.ro>",
+                "Copyright (C) <<yeartoyear(2021,now)>> <<company>> <<<companyWebsite>>>",
+                "SPDX-License-Identifier: <<spdxid>>"
+            ]
+        },
+        {
+            "language": "yml",
+            "template": [
+                "Copyright (C) <<yeartoyear(2021,now)>> <<author>> <constantin.zaharia@progeek.ro>",
+                "Copyright (C) <<yeartoyear(2021,now)>> <<company>> <<<companyWebsite>>>",
+                "SPDX-License-Identifier: <<spdxid>>"
+            ]
+        },
+        {
+            "language": "ansible",
+            "template": [
+                "Copyright (C) <<yeartoyear(2021,now)>> <<author>> <constantin.zaharia@progeek.ro>",
+                "Copyright (C) <<yeartoyear(2021,now)>> <<company>> <<<companyWebsite>>>",
+                "SPDX-License-Identifier: <<spdxid>>"
+            ]
+        },
+        {
+            "language": "shellscript",
+            "template": [
+                "Copyright (C) <<yeartoyear(2021,now)>> <<author>> <constantin.zaharia@progeek.ro>",
+                "Copyright (C) <<yeartoyear(2021,now)>> <<company>> <<<companyWebsite>>>",
+                "SPDX-License-Identifier: <<spdxid>>"
+            ]
+        },
+        {
+            "language": "jinja",
+            "template": [
+                "Copyright (C) <<yeartoyear(2021,now)>> <<author>> <constantin.zaharia@progeek.ro>",
+                "Copyright (C) <<yeartoyear(2021,now)>> <<company>> <<<companyWebsite>>>",
+                "SPDX-License-Identifier: <<spdxid>>"
+            ]
+        },
+        {
+			"language": "javascript",
+			"template": [
+				"Copyright (C) <<yeartoyear(2021,now)>> <<author>> <constantin.zaharia@progeek.ro>",
+                "Copyright (C) <<yeartoyear(2021,now)>> <<company>> <<<companyWebsite>>>",
+                "SPDX-License-Identifier: <<spdxid>>"
+			]
+		},
+		{
+			"language": "typescript",
+			"mapTo": "javascript"
+		}
+    ],
+    "cSpell.enabled": true,
+    "cSpell.enableFiletypes": [
+        "ansible-jinja"
+    ]
 }

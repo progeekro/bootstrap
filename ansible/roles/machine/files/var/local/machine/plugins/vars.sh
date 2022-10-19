@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+# Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+
 export WORK_ZONE_PATH=/opt/workzone
 export WORK_ZONE_APPS=${WORK_ZONE_PATH}/apps
 export WORK_ZONE_LOG=${WORK_ZONE_PATH}/logs
