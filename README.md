@@ -8,7 +8,7 @@
 [![REUSE status][reuse-status]](https://api.reuse.software/info/github.com/progeekro/bootstrap)
 [![RSS commits][rss-commits]](https://github.com/progeekro/bootstrap/commits/main.atom)
 
-[progeek-logo]: https://raw.githubusercontent.com/progeekro/bootstrap/main/lib/images/progeek-50x50.png
+[progeek-logo]: https://raw.githubusercontent.com/progeekro/bootstrap/main/lib/images/progeek-50x37.png
 [github-ci]: https://github.com/progeekro/bootstrap/workflows/Continuous%20Integration/badge.svg
 [gitlab-ci]: https://gitlab.com/progeekro/bootstrap/badges/main/pipeline.svg
 [cii-best-practices]: https://bestpractices.coreinfrastructure.org/projects/6582/badge
