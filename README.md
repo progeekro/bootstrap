@@ -8,7 +8,7 @@
 [![REUSE status][reuse-status]](https://api.reuse.software/info/github.com/progeekro/bootstrap)
 [![RSS commits][rss-commits]](https://github.com/progeekro/bootstrap/commits/main.atom)
 
-[progeek-logo]: https://raw.githubusercontent.com/progeekro/bootstrap/main/lib/images/progeek-small.png
+[progeek-logo]: https://raw.githubusercontent.com/progeekro/bootstrap/main/lib/images/progeek-50x50.png
 [github-ci]: https://github.com/progeekro/bootstrap/workflows/Continuous%20Integration/badge.svg
 [gitlab-ci]: https://gitlab.com/progeekro/bootstrap/badges/main/pipeline.svg
 [cii-best-practices]: https://bestpractices.coreinfrastructure.org/projects/6582/badge
@@ -28,6 +28,6 @@ project tarballs, Ansible Collections and Python packages. The project uses the
 verify copyright and license information in all files.
 
 [GPL-3.0-or-later]: https://www.gnu.org/licenses/gpl-3.0
-[LICENSES/GPL-3.0-or-later.txt]: https://github.com/debops/debops/blob/master/LICENSES/GPL-3.0-or-later.txt
+[LICENSES/GPL-3.0-or-later.txt]: https://github.com/progeek/bootstrap/blob/main/LICENSES/GPL-3.0-or-later.txt
 [spdx-ids]: https://spdx.org/ids
 [reuse-specification]: https://reuse.software/spec/
