@@ -1,0 +1,19 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Bootstrap
+Upstream-Contact: Constantin Zaharia <constantin.zaharia@progeek.ro>
+Source: https://github.com/progeekro/bootstrap
+
+Files: README.md
+Copyright: 2022, Zaharia Constanin <constantin.zaharia@progeek.ro>
+           2022-2023, ProGeek <https://progeek.ro/>
+License: GPL-3.0-or-later
+
+Files: lib/images/progeek.svg lib/images/progeek-small.svg
+Copyright: 2022, Zaharia Constanin <constantin.zaharia@progeek.ro>
+           2022-2023, ProGeek <https://progeek.ro/>
+License: GPL-3.0-or-later
+
+Files: lib/images/progeek.png lib/images/progeek-text.png lib/images/progeek-small.png
+Copyright: 2022, Zaharia Constanin <constantin.zaharia@progeek.ro>
+           2022-2023, ProGeek <https://progeek.ro/>
+License: GPL-3.0-or-later
