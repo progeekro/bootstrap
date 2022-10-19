@@ -1,4 +1,10 @@
 # -*- mode: yaml -*-
+# .. vim: foldmarker=[[[,]]]:foldmethod=marker
+
+# Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+# Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # vim:ts=2:sw=2:ai:si:syntax=yaml
 #
 # yamllint configuration directives

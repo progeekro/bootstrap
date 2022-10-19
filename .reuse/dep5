@@ -4,16 +4,33 @@ Upstream-Contact: Constantin Zaharia <constantin.zaharia@progeek.ro>
 Source: https://github.com/progeekro/bootstrap
 
 Files: README.md
-Copyright: 2022, Zaharia Constanin <constantin.zaharia@progeek.ro>
-           2022-2023, ProGeek <https://progeek.ro/>
+Copyright: 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+           2021-2022 ProGeek <https://progeek.ro>
 License: GPL-3.0-or-later
 
 Files: lib/images/progeek.svg lib/images/progeek-small.svg
-Copyright: 2022, Zaharia Constanin <constantin.zaharia@progeek.ro>
-           2022-2023, ProGeek <https://progeek.ro/>
+Copyright: 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+           2021-2022 ProGeek <https://progeek.ro>
 License: GPL-3.0-or-later
 
-Files: lib/images/progeek.png lib/images/progeek-text.png lib/images/progeek-small.png
-Copyright: 2022, Zaharia Constanin <constantin.zaharia@progeek.ro>
-           2022-2023, ProGeek <https://progeek.ro/>
+Files: lib/images/progeek.png lib/images/progeek-text.png lib/images/progeek-small.png lib/images/progeek-50x37.png
+Copyright: 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+           2021-2022 ProGeek <https://progeek.ro>
+License: GPL-3.0-or-later
+
+Files: ansible/roles/machine/files/*
+Copyright: 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+           2021-2022 ProGeek <https://progeek.ro>
+License: GPL-3.0-or-later
+
+Files: ansible/roles/apt/templates/* ansible/roles/hddtemp/templates/*  ansible/roles/lldpd/templates/* ansible/roles/machine/templates/*
+       ansible/roles/ntp/templates/* ansible/roles/python/templates/*   ansible/roles/select_hostvars/templates/*
+        ansible/roles/smartmontools/templates/* ansible/roles/tzdata/templates/*
+Copyright: 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+           2021-2022 ProGeek <https://progeek.ro>
+License: GPL-3.0-or-later
+
+Files: .vscode/*
+Copyright: 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+           2021-2022 ProGeek <https://progeek.ro>
 License: GPL-3.0-or-later

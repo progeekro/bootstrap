@@ -1,3 +1,10 @@
+---
+# .. vim: foldmarker=[[[,]]]:foldmethod=marker
+
+# Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+# Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 galaxy_info:
   author: your name
   description: your role description
@@ -11,10 +18,10 @@ galaxy_info:
   # - BSD-3-Clause (default)
   # - MIT
   # - GPL-2.0-or-later
-  # - GPL-3.0-only
+  # - GPL-3.0-or-later
   # - Apache-2.0
   # - CC-BY-4.0
-  license: license (GPL-2.0-or-later, MIT, etc)
+  license: GPL-3.0-or-later
 
   min_ansible_version: 2.9
 

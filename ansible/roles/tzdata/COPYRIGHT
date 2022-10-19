@@ -2,7 +2,7 @@ progeekro.tzdata - Time zone and daylight-saving time data
 
 Copyright (C) 2022 Robin Schneider <constantin.zaharia@progeek.ro>
 Copyright (C) 2022-2023 ProGeek <https://progeek.ro/>
-SPDX-License-Identifier: GPL-3.0-only
+SPDX-License-Identifier: GPL-3.0-or-later
 
 This Ansible role is part of Bootstrap.
 

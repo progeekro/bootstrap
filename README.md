@@ -11,7 +11,7 @@
 [progeek-logo]: https://raw.githubusercontent.com/progeekro/bootstrap/main/lib/images/progeek-50x37.png
 [github-ci]: https://github.com/progeekro/bootstrap/workflows/Continuous%20Integration/badge.svg
 [gitlab-ci]: https://gitlab.com/progeekro/bootstrap/badges/main/pipeline.svg
-[cii-best-practices]: https://bestpractices.coreinfrastructure.org/projects/6582/badge
+[cii-best-practices]: https://bestpractices.coreinfrastructure.org/projects/6603/badge
 [reuse-status]: https://api.reuse.software/badge/github.com/progeekro/bootstrap
 [rss-commits]: https://img.shields.io/badge/RSS-commits-orange.svg
 
