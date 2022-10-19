@@ -17,7 +17,7 @@
 
 ## Licensing
 
-The DebOps project is licensed under the [GNU General Public License 3.0 or later][GPL-3.0-or-later].
+The ProGeek collections project is licensed under the [GNU General Public License 3.0 or later][GPL-3.0-or-later].
 You can find full text of the license in the [LICENSES/GPL-3.0-or-later.txt] file.
 
 Some files included with the DebOps project use a different license.
