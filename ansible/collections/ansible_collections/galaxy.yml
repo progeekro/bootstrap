@@ -1,0 +1,38 @@
+---
+
+# Copyright (C) 2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+# Copyright (C) 2022 ProGeek <https://progeek.ro/>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# A "stub" configuration file for the 'ansible-galaxy' command which ensures
+# that the Bootstrap is recognized as an Ansible Collection.
+# Don't use this file to create real Ansible Collections with ProGeek content.
+
+namespace: "progeekro"
+name: "bootstrap"
+version: "0.0.1"
+description: "Your Debian-based bootostrap roles"
+
+authors:
+  - "Zaharia Constantin <constantin.zaharia@progeek.ro>"
+
+repository: "https://github.com/progeekro/bootstrap"
+documentation: "https://progeekro.github.io/bootstrap/docs/en/master/ansible/role-index.html"
+homepage: "https://progeekro.github.io/"
+issues: "https://github.com/progeekro/bootstrap/issues"
+
+readme: "README.md"
+license:
+  - "GPL-3.0-or-later"
+
+tags:
+  - "debian"
+  - "ubuntu"
+  - "progeekro"
+  - "bootstrap"
+  - "sysadmin"
+  - "cluster"
+  - "datacenter"
+
+dependencies:
+  "ansible.posix": "*"

@@ -15,7 +15,7 @@ declare -A collection_name_map
 declare -A collection_floor_map
 declare -A workdir_map
 
-collections=( progeekro roles01 roles02 roles03 )
+collections=( bootstrap roles01 roles02 roles03 )
 
 for i in "${!collections[@]}" ; do
     collection_name_map[${collections[${i}]}]="${i}"
@@ -32,7 +32,7 @@ if ! [ -f lib/ansible-galaxy/make-collection ] ; then
     exit 1
 fi
 
-Check if ansible-galaxy is installed
+# Check if ansible-galaxy is installed
 if ! type ansible-galaxy > /dev/null 2>&1 ; then
     printf "%s\\n" "Error: ansible-galaxy not found"
     exit 1

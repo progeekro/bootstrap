@@ -33,7 +33,7 @@
   ansible.builtin.meta: 'flush_handlers'
 
 - name: Divert daemon configuration file if requested
-  dpkg_divert:
+  progeekro.bootstrap.dpkg_divert:
     path: '/etc/default/lldpd'
     state: '{{ "present"
                if ((lldpd__default_daemon_arguments

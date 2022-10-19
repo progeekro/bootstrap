@@ -3,6 +3,12 @@
 # Use the Bash shell by default
 SHELL := /bin/bash
 
+ifeq ("$(wildcard .no-clear-git)","") 
+	NO_CLEAN_GIT=true
+else
+	NO_CLEAN_GIT=false
+endif
+
 .PHONY: all
 all: help
 
@@ -34,7 +40,11 @@ versions: check-versions
 .PHONY: clean-git
 clean-git:      ## Clean up directories and files ignored by git
 clean-git:
-	@git clean -X -d -f
+	@if ! [ $(NO_CLEAN_GIT) ]; then\
+		@git clean -X -d -f;\
+	else \
+		echo -e "On this run the clean-git is disabled. Delete the .no-clean-git file to enable back\r";\
+	fi
 
 .PHONY: docker
 docker:         ## Check Docker image build
