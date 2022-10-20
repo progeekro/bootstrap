@@ -6,15 +6,15 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Import global handlers
-  import_role:
+  ansible.builtin.import_role:
     name: 'global_handlers'
 
 - name: Ensure that configuration is supported
-  assert:
+  ansible.builtin.assert:
     that: not ntp__daemon or ntp__daemon in [ 'chrony', 'ntpd', 'ntpdate', 'openntpd', 'systemd-timesyncd' ]
 
 - name: Ensure that alternative daemons/programs are not installed
-  apt:
+  ansible.builtin.apt:
     name: '{{ ntp__purge_packages | flatten }}'
     state: 'absent'
     purge: True
@@ -23,7 +23,7 @@
 
   # Installs either ntpdate, NTPd, chrony or OpenNTPd on all hosts except inside containers
 - name: Install NTP service
-  include_tasks: install.yml
+  ansible.builtin.include_tasks: install.yml
   when: ntp__daemon_enabled | bool
 
 - name: Make sure that Ansible local facts directory exists
@@ -42,6 +42,3 @@
     group: 'root'
     mode: '0644'
   tags: [ 'meta::facts' ]
-
-  
-...

@@ -7,12 +7,17 @@
 
 # The order of the imports affects the execution order of handlers.
 
-- import_tasks: 'meta.yml'
+- name: Import Meta
+  ansible.builtin.import_tasks: 'meta.yml'
 
-- import_tasks: 'ntp.yml'
+- name: Import NTP
+  ansible.builtin.import_tasks: 'ntp.yml'
 
-- import_tasks: 'lldpd.yml'
+- name: Import LLDPD
+  ansible.builtin.import_tasks: 'lldpd.yml'
 
-- import_tasks: 'hddtemp.yml'
+- name: Import Hddtemp
+  ansible.builtin.import_tasks: 'hddtemp.yml'
 
-- import_tasks: 'smartmontools.yml'
+- name: Import Smart tools
+  ansible.builtin.import_tasks: 'smartmontools.yml'

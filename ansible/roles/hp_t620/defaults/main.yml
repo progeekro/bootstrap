@@ -29,7 +29,7 @@ hp__t620_packages_default:
 hp__t620_packages_extra: []
 
 # Final list of APT packages that will be installed on this role
-hp__t620_packages: '{{ q("flattened", hp__t620_packages_default + hp__t620_packages_extra, hp__b43_driver_package if hp__b43_driver_enabled|bool else [] ) }}'
+hp__t620_packages: '{{ q("flattened", hp__t620_packages_default + hp__t620_packages_extra, hp__b43_driver_package if hp__b43_driver_enabled | bool else []) }}'
 
 # the file is provided by: https://github.com/winterheart/broadcom-bt-firmware
 hp__broadcom_bt_firmware:
@@ -37,10 +37,10 @@ hp__broadcom_bt_firmware:
 
 # List of DEB packages that are default to this role
 hp__t620_deb_packages_default: []
-  
+
 
 # List user specified of DEB packages to install on this role
 hp__t620_deb_packages_extra: []
 
 # Final list of DEB packages that will be installed on this role
-hp__t620_deb_packages: '{{ q("flattened", hp__t620_deb_packages_default + hp__t620_deb_packages_extra, hp__broadcom_bt_firmware if hp__b43_driver_enabled else [] ) }}'
+hp__t620_deb_packages: '{{ q("flattened", hp__t620_deb_packages_default + hp__t620_deb_packages_extra, hp__broadcom_bt_firmware if hp__b43_driver_enabled else []) }}'

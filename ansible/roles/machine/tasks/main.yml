@@ -1,4 +1,5 @@
 ---
+
 # .. vim: foldmarker=[[[,]]]:foldmethod=marker
 
 # Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
@@ -6,19 +7,19 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Import global handlers
-  import_role:
+  ansible.builtin.import_role:
     name: 'global_handlers'
 
 - name: Install requested packages
-  package:
+  ansible.builtin.package:
     name: '{{ machine__packages }}'
     state: 'present'
   register: machine__register_packages
   until: machine__register_packages is succeeded
   when: machine__enabled | bool
-  
+
 - name: Generate machine-info config file
-  template:
+  ansible.builtin.template:
     src: 'etc/machine-info.j2'
     dest: '/etc/machine-info'
     owner: 'root'
@@ -36,7 +37,7 @@
   when: machine__enabled | bool
 
 - name: Configure /etc/issue file
-  template:
+  ansible.builtin.template:
     src: '{{ machine__etc_issue_template }}'
     dest: '/etc/issue'
     owner: 'root'
@@ -45,13 +46,13 @@
   when: machine__enabled | bool and machine__etc_issue_state | d('present') != 'absent'
 
 - name: Remove static /etc/motd file if requested
-  file:
+  ansible.builtin.file:
     path: '/etc/motd'
     state: 'absent'
   when: machine__enabled | bool and machine__etc_motd_state == 'absent'
 
 - name: Generate static /etc/motd file
-  copy:
+  ansible.builtin.copy:
     content: "{{ machine__motd }}"
     dest: '/etc/motd'
     owner: 'root'
@@ -61,7 +62,7 @@
         machine__motd | d()
 
 - name: Ensure that required directories exist
-  file:
+  ansible.builtin.file:
     path: '{{ machine__motd_update_dir }}'
     state: 'directory'
     owner: 'root'
@@ -70,18 +71,17 @@
   when: machine__enabled | bool
 
 - name: Create /run/motd.dynamic symlink
-  meta: 'flush_handlers'
+  ansible.builtin.meta: 'flush_handlers'
 
 - name: Add/remove diversion of packaged MOTD scripts
   vars:
-    divert_path: '{{ "/etc/update-motd.d/"
-                      + item.filename | d(("%02d" | format(item.weight | int)) | string + "-" + item.name) }}'
-  progeek.bootstrap.dpkg_divert:
+    divert_path: '{{ "present" if (machine__enabled | bool and item.state | d("present") not in ["absent", "revert"]) else "absent" }}'
+  progeekro.bootstrap.dpkg_divert:
     path: '{{ divert_path }}'
     divert: '{{ divert_path + ".disabled" }}'
     state: '{{ "present" if
                (machine__enabled | bool and
-                item.state | d("present") not in [ "absent", "revert" ])
+                item.state | d("present") not in ["absent", "revert"])
                else "absent" }}'
     delete: True
   loop: '{{ machine__motd_combined_scripts | parse_kv_items }}'
@@ -90,18 +90,18 @@
   when: item.filename | d(item.name) and item.divert | d(False) | bool
 
 - name: Remove dynamic MOTD scripts
-  file:
+  ansible.builtin.file:
     path: '{{ machine__motd_update_dir + "/"
               + (item.filename | d(("%02d" | format(item.weight | int)) | string + "-" + item.name)) }}'
     state: 'absent'
-  with_flattened: '{{ machine__motd_combined_scripts | parse_kv_items }}'
+  with_items: '{{ q("flattened", machine__motd_combined_scripts | parse_kv_items) }}'
   register: machine__register_motd_scripts_removed
   when: (machine__enabled | bool and
          item.filename | d(item.name) and
          item.state | d('present') == 'absent' and not item.divert | d(False) | bool)
 
 - name: Install dynamic MOTD scripts
-  copy:
+  ansible.builtin.copy:
     src: '{{ item.src | d(omit) }}'
     content: '{{ item.content | d(omit) }}'
     dest: '{{ machine__motd_update_dir + "/"
@@ -119,7 +119,7 @@
          item.state | d('present') not in [ 'init', 'absent', 'ignore', 'divert', 'revert' ])
 
 - name: Remove unknown MOTD scripts
-  shell: find /etc/update-motd.d -maxdepth 1 -type f
+  ansible.builtin.shell: find /etc/update-motd.d -maxdepth 1 -type f
          -name '*-{{ item.item.name }}'
          ! -name '{{ ("%02d" | format((item.item.weight | d("0")) | int)) | string + "-" + item.item.name }}'
          -exec rm -vf {} +
@@ -131,7 +131,7 @@
          item.item.filename is undefined and item is changed)
 
 - name: Copy all the necessary files for machine tweaks
-  copy:
+  ansible.builtin.copy:
     src: files/var/local/machine/
     dest: /var/local/machine/
     owner: 'root'
@@ -139,7 +139,7 @@
   when: machine__tweaks_enabled | bool
 
 - name: Install the machine tweaks in profile.d
-  file:
+  ansible.builtin.file:
     src: /var/local/machine/lib/machine_tweaks.sh
     dest: /etc/profile.d/machine_tweaks.sh
     owner: root
@@ -148,13 +148,13 @@
     state: '{{ "link" if machine__tweaks_enabled | bool else "absent" }}'
 
 - name: Remove any nanorc config file from etc
-  file:
+  ansible.builtin.file:
     path: /etc/nanorc
     state: absent
   when: machine__tweak_nano | bool
 
 - name: Install the nano tweaks in nanorc
-  file:
+  ansible.builtin.file:
     src: /var/local/machine/lib/nanorc
     dest: /etc/nanorc
     owner: root
@@ -164,7 +164,7 @@
     state: '{{ "link" if machine__tweak_nano | bool else "absent" }}'
 
 - name: Make sure that Ansible local facts directory exists
-  file:
+  ansible.builtin.file:
     path: '/etc/ansible/facts.d'
     state: 'directory'
     owner: 'root'
@@ -172,7 +172,7 @@
     mode: '0755'
 
 - name: Save machine local facts
-  template:
+  ansible.builtin.template:
     src: 'etc/ansible/facts.d/machine.fact.j2'
     dest: '/etc/ansible/facts.d/machine.fact'
     owner: 'root'
@@ -182,4 +182,4 @@
   tags: [ 'meta::facts' ]
 
 - name: Update Ansible facts if they were modified
-  meta: 'flush_handlers'
+  ansible.builtin.meta: 'flush_handlers'

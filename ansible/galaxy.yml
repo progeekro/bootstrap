@@ -1,4 +1,5 @@
 ---
+
 # .. vim: foldmarker=[[[,]]]:foldmethod=marker
 
 # Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
@@ -41,12 +42,12 @@ license_file: ''
 # A list of tags you want to associate with the collection for indexing/searching. A tag name has the same character
 # requirements as 'namespace' and 'name'
 tags:
-  - debian
-  - linux
-  - bootstrap
-  - hddtools
-  - smartctrl
-  - lldp
+- debian
+- linux
+- bootstrap
+- hddtools
+- smartctrl
+- lldp
 
 # Collections that this collection requires to be installed for it to be usable. The key of the dict is the
 # collection label 'namespace.name'. The value is a version range
@@ -71,5 +72,5 @@ issues: https://github.com/soulraven/soulraven.bootstrap/issues
 # uses 'fnmatch' to match the files or directories. Some directories and files like 'galaxy.yml', '*.pyc', '*.retry',
 # and '.git' are always filtered
 build_ignore:
-  - secrets/*.*
-  - '*.tar.gz'
+- secrets/*.*
+- '*.tar.gz'

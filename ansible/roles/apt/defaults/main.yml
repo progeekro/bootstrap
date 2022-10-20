@@ -27,7 +27,7 @@ apt__host_extra_architectures: []
 # Enable (if ``present``) or disable (if ``absent``) management of
 # `/etc/apt/sources.list` file by the role.
 apt__sources_deploy_state: '{{ "present"
-                               if (apt__distribution in [ "Debian", "Raspbian", "Ubuntu", "Devuan" ])
+                               if (apt__distribution in ["Debian", "Raspbian", "Ubuntu", "Devuan"])
                                else "absent" }}'
 
 # By default role disables duplicate `/etc/apt/sources.list` entries to
@@ -41,7 +41,7 @@ apt__sources_filter_duplicates: true
 # By default non-free repositories are enabled on hardware-based hosts due to
 # a possible requirement for non-free firmware packages.
 apt__nonfree: '{{ true if (ansible_virtualization_role is undefined or
-                           ansible_virtualization_role not in [ "guest" ])
+                           ansible_virtualization_role not in ["guest"])
                        else false }}'
 
 # List of source types to configure for the default package sources. Supported
@@ -73,7 +73,7 @@ apt__base_packages:
   - 'ca-certificates'
   - '{{ "apt-transport-https"
         if (ansible_distribution_release in
-            [ "stretch", "trusty", "xenial" ])
+            ["stretch", "trusty", "xenial"])
         else [] }}'
   - 'gnupg'
 
@@ -101,7 +101,7 @@ apt__purge_group_packages: []
 # List of APT packages to purge on specific hosts in the Ansible inventory.
 apt__purge_host_packages: []
 
-# List of aditional purge packages defined by other Ansible roles via role
+# List of additional purge packages defined by other Ansible roles via role
 apt__dependent_purge_packages: []
 
 # APT repository keys
@@ -409,7 +409,7 @@ apt__security_sources:
     type:         '{{ apt__source_types }}'
     suite:        '{{ apt__distribution_release
                       + ("/updates"
-                         if apt__distribution_release in [ "stretch", "buster" ]
+                         if apt__distribution_release in ["stretch", "buster"]
                          else "-security") }}'
     components:   '{{ apt__distribution_components }}'
     distribution: 'Debian'
@@ -492,4 +492,4 @@ apt__combined_sources: '{{ ([]
                            ([]
                             if (apt__distribution_suite == "archive")
                             else (apt__host_security_sources + apt__group_security_sources)) +
-                           apt__security_sources }}'
+                            apt__security_sources }}'

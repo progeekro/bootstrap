@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Import assert.yml
-  include_tasks: assert.yml
+  ansible.builtin.include_tasks: assert.yml
   run_once: true
 
   # This task allows configuration of the outer mount point attributes, but
@@ -23,13 +23,13 @@
          (item.device | d(item.src)) not in (ansible_mounts | map(attribute='device') | list))
 
 - name: "Getting partition UUID ..."
-  command: /sbin/blkid -s UUID -o value {{ item.device }}{{ item.number }}
+  ansible.builtin.command: /sbin/blkid -s UUID -o value {{ item.device }}{{ item.number }}
   register: register_disk_blkid
   with_items: "{{ mount_disks_to_manage }}"
   changed_when: False
 
 - name: "Mounting disks ..."
-  mount:
+  ansible.posix.mount:
     path: "{{ item.0.path }}"
     src: "UUID={{ item.1.stdout }}"
     fstype: "{{ item.0.fstype }}"

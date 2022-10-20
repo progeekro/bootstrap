@@ -6,11 +6,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Import global handlers
-  import_role:
+  ansible.builtin.import_role:
     name: 'global_handlers'
-  
+
 - name: Install the APT packages
-  apt:
+  ansible.builtin.apt:
     name: '{{ hp__t620_packages }}'
     state: "{{ 'latest' if hp__t620_enabled | bool else 'absent' }}"
     update_cache: yes
@@ -18,7 +18,7 @@
   until: register_apt_packages is succeeded
 
 - name: Install the DEB packages
-  apt:
+  ansible.builtin.apt:
     deb: '{{ item }}'
   with_items: '{{ hp__t620_deb_packages }}'
   register: register_deb_packages

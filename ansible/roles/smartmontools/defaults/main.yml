@@ -18,15 +18,15 @@ smartd__packages_extra: []
 # Final list of APK packages that will be installed on this role
 smartd__packages: '{{ q("flattened", smartd__packages_default + smartd__packages_extra) }}'
 
-# Define when smartctl shot and long test will take place. 
+# Define when smartctl shot and long test will take place.
 # Format is: MM/DD/d/HH, where:
 # MM = Month of the year, expressed with two decimal digits. The range is from 01 (January)
 #      to 12 (December) inclusive. Do not use a single decimal digit or the match will always fail!
-# DD = Day of the month, expressed with two decimal digits. The range is from 01 to 31 inclusive. 
+# DD = Day of the month, expressed with two decimal digits. The range is from 01 to 31 inclusive.
 #      Do not use a single decimal digit or the match will always fail!
 # d  = Day of the week, expressed with one decimal digit. The range is from 1 (Monday) to 7 (Sunday)
 #      inclusive.
-# HH = Hour of the day, written with two decimal digits, and given in hours after midnight. The 
+# HH = Hour of the day, written with two decimal digits, and given in hours after midnight. The
 #      range is 00 (midnight to just before 1am) to 23 (11pm to just before midnight) inclusive.
 #      Do not use a single decimal digit or the match will always fail!
 

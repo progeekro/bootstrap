@@ -77,6 +77,6 @@ hddtemp__manual_entries:
   - '"Samsung SSD (840|860)" 190 C "Temp for Samsung SSDs"'
 
 # This will adjust HDDTemp to display temperature values in F or C.
-# It will also enable F to C conversions for temperatures pulled directly 
+# It will also enable F to C conversions for temperatures pulled directly
 # from smartctl (such as for NVMe devices)
 hddtemp__display_temp_unit: "C"

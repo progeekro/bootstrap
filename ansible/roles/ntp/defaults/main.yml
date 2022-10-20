@@ -68,28 +68,25 @@ ntp__servers: '{{ (ntp__servers_map[ansible_distribution][1]
 
 # YAML dictionary with different NTP server lists depending on OS distribution.
 ntp__servers_map:
-  'Debian':  [ '0.debian.pool.ntp.org', '1.debian.pool.ntp.org',
-               '2.debian.pool.ntp.org', '3.debian.pool.ntp.org' ]
-  'Ubuntu':  [ '0.ubuntu.pool.ntp.org', '1.ubuntu.pool.ntp.org',
-               '2.ubuntu.pool.ntp.org', '3.ubuntu.pool.ntp.org' ]
-  'default': [ '0.pool.ntp.org', '1.pool.ntp.org',
-               '2.pool.ntp.org', '3.pool.ntp.org' ]
+  'Debian': [ '0.debian.pool.ntp.org', '1.debian.pool.ntp.org', '2.debian.pool.ntp.org', '3.debian.pool.ntp.org' ]
+  'Ubuntu': [ '0.ubuntu.pool.ntp.org', '1.ubuntu.pool.ntp.org', '2.ubuntu.pool.ntp.org', '3.ubuntu.pool.ntp.org' ]
+  'default': [ '0.pool.ntp.org', '1.pool.ntp.org', '2.pool.ntp.org', '3.pool.ntp.org' ]
 
 # Fudge local clock if time servers is not available.
 ntp__fudge: True
 
 # Treat NTP server addresses as pool addresses. The server name is expected
 # to resolve to multiple IP addresses which might change over time. This is
-# currently only supported by :program:`chrony`. Other NTP servers will
+# currently only supported by `chrony`. Other NTP servers will
 # ignore this setting.
 ntp__servers_as_pool: True
 
 # List of APT packages to install for NTP support.
 ntp__base_packages:
-  - '{{ "chrony"   if (ntp__daemon == "chrony")   else [] }}'
-  - '{{ "ntp"      if (ntp__daemon == "ntpd")     else [] }}'
+  - '{{ "chrony" if (ntp__daemon == "chrony") else [] }}'
+  - '{{ "ntp" if (ntp__daemon == "ntpd") else [] }}'
   - '{{ "openntpd" if (ntp__daemon == "openntpd") else [] }}'
-  - '{{ "ntpdate"  if (ntp__daemon == "ntpdate")  else [] }}'
+  - '{{ "ntpdate" if (ntp__daemon == "ntpdate") else [] }}'
 
 # List of additional APT packages to install with NTP support.
 ntp__packages: []
@@ -97,11 +94,10 @@ ntp__packages: []
 # List of APT packages to purge during NTP configuration to avoid issues with
 # conflicting services.
 ntp__purge_packages:
-  - '{{ "chrony"   if (ntp__daemon != "chrony")                  else [] }}'
-  - '{{ "ntp"      if (ntp__daemon not in [ "ntpd", "openntpd"]) else [] }}'
-  - '{{ "openntpd" if (ntp__daemon != "openntpd")                else [] }}'
-  - '{{ "ntpdate"  if (ntp__daemon != "ntpdate" and
-                       not ntp__ignore_ntpdate | bool)             else [] }}'
+  - '{{ "chrony" if (ntp__daemon != "chrony") else [] }}'
+  - '{{ "ntp" if (ntp__daemon not in ["ntpd", "openntpd"]) else [] }}'
+  - '{{ "openntpd" if (ntp__daemon != "openntpd") else [] }}'
+  - '{{ "ntpdate" if (ntp__daemon != "ntpdate" and not ntp__ignore_ntpdate | bool) else [] }}'
 
 # OpenNTPd configuration
 
@@ -126,7 +122,3 @@ ntp__listen: []
 # anywhere. You should probably define a list of networks allowed access to
 # mitigate NTP amplification attacks.
 ntp__allow: []
-
-
-
-...

@@ -24,5 +24,3 @@
   roles:
     - role: k3s
       tags: [ 'k3s', 'skip::k3s' ]
-
-...

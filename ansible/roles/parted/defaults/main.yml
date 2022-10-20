@@ -31,9 +31,9 @@ parted__packages: []
 #     part_end: 100%
 #     flags: [ lvm ]
 #     state: present
-#     label: 
+#     label:
 #     name:
-#     unit: 
+#     unit:
 
 parted_disks: []
 
@@ -51,5 +51,5 @@ parted_disks_defaults: {}
 parted_disks_load_from_hostvars: False
 
 parted_disks_to_manage: >-
-    {{ parted_disks + ((parted_disks_load_from_hostvars | bool) | 
+    {{ parted_disks + ((parted_disks_load_from_hostvars | bool) |
         ternary(parted_disks_hostvars | default([]) | flatten, [])) }}

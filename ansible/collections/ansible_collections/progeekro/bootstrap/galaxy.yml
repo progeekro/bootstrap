@@ -1,13 +1,10 @@
 ---
+
 # .. vim: foldmarker=[[[,]]]:foldmethod=marker
 
 # Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
 # Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
 # SPDX-License-Identifier: GPL-3.0-or-later
-
-# A "stub" configuration file for the 'ansible-galaxy' command which ensures
-# that the Bootstrap is recognized as an Ansible Collection.
-# Don't use this file to create real Ansible Collections with ProGeek content.
 
 namespace: "progeekro"
 name: "bootstrap"

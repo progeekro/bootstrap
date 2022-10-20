@@ -27,5 +27,5 @@ mount_devices_defaults: {}
 mount_devices_load_from_hostvars: False
 
 mount_disks_to_manage: >-
-    {{ mount__devices + ((mount_devices_load_from_hostvars | bool) | 
+    {{ mount__devices + ((mount_devices_load_from_hostvars | bool) |
         ternary(mount_devices_hostvars | default([]) | flatten, [])) }}

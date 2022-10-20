@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Import global handlers
-  import_role:
+  ansible.builtin.import_role:
     name: 'global_handlers'
 
 - name: Update APT cache on first run
@@ -67,8 +67,8 @@
   when: apt__enabled | bool
 
 - name: Enable extra architectures
-  command: dpkg --add-architecture {{ item }}
-  with_items: '{{ q("flattened", 
+  ansible.builtin.command: dpkg --add-architecture {{ item }}
+  with_items: '{{ q("flattened",
     apt__extra_architectures,
     apt__group_extra_architectures,
     apt__host_extra_architectures) }}'
@@ -95,13 +95,13 @@
 
 - name: Configure custom APT keys
   ansible.builtin.apt_key:
-    data:      '{{ item.data      | d(omit) }}'
-    file:      '{{ item.file      | d(omit) }}'
-    id:        '{{ item.id        | d(omit) }}'
-    keyring:   '{{ item.keyring   | d(omit) }}'
+    data:      '{{ item.data | d(omit) }}'
+    file:      '{{ item.file | d(omit) }}'
+    id:        '{{ item.id | d(omit) }}'
+    keyring:   '{{ item.keyring | d(omit) }}'
     keyserver: '{{ item.keyserver | d(omit) }}'
-    url:       '{{ item.url       | d(omit) }}'
-    state:     '{{ item.state     | d("present"
+    url:       '{{ item.url | d(omit) }}'
+    state:     '{{ item.state | d("present"
                                       if (item.architecture | d(apt__architecture) == apt__architecture and
                                           item.distribution | d(apt__distribution) == apt__distribution and
                                           item.distribution_release | d(apt__distribution_release)
@@ -123,15 +123,15 @@
   ansible.builtin.apt_repository:
     update_cache: False
     repo:     '{{ item.repo }}'
-    mode:     '{{ item.mode     | d(omit) }}'
+    mode:     '{{ item.mode | d(omit) }}'
     filename: '{{ item.filename | d(omit) }}'
-    state:    '{{ item.state    | d("present"
+    state:    '{{ item.state | d("present"
                                     if (item.architecture | d(apt__architecture) == apt__architecture and
                                         item.distribution | d(apt__distribution) == apt__distribution and
                                         item.distribution_release | d(apt__distribution_release)
                                         == apt__distribution_release)
                                     else "absent") }}'
-  with_items: '{{ q("flattened", 
+  with_items: '{{ q("flattened",
     apt__repositories,
     apt__group_repositories,
     apt__host_repositories,
@@ -141,7 +141,7 @@
 
 - name: Remove APT auth configuration if requested
   ansible.builtin.file:
-    path: '{{ "/etc/apt/auth.conf.d/" + (item.name | regex_replace(".conf$","")) + ".conf" }}'
+    path: '{{ "/etc/apt/auth.conf.d/" + (item.name | regex_replace(".conf$", "")) + ".conf" }}'
     state: 'absent'
   loop: '{{ q("flattened", apt__auth_files + apt__group_auth_files + apt__host_auth_files + apt__dependent_auth_files) }}'
   when: apt__enabled | bool and item.state | d('present') == 'absent'
@@ -150,24 +150,24 @@
 - name: Generate APT auth configuration
   ansible.builtin.template:
     src: 'etc/apt/auth.conf.d/template.conf.j2'
-    dest: '{{ "/etc/apt/auth.conf.d/" + (item.name | regex_replace(".conf$","")) + ".conf" }}'
+    dest: '{{ "/etc/apt/auth.conf.d/" + (item.name | regex_replace(".conf$", "")) + ".conf" }}'
     mode: '0640'
   loop: '{{ q("flattened", apt__auth_files + apt__group_auth_files + apt__host_auth_files + apt__dependent_auth_files) }}'
   when: apt__enabled | bool and item.machine | d() and item.login | d() and item.password | d() and
         item.state | d('present') not in [ 'absent', 'ignore' ]
   no_log: '{{ progeek__no_log | d(True) }}'
 
-# Manage configuration files [[[
+# Manage configuration files
 - name: Generate additional APT configuration files
   ansible.builtin.copy:
     dest:     "/etc/apt/apt.conf.d/{{ (item.priority | d('60')) + (item.dest | d(item.path | d(item.name))) }}"
-    src:      '{{ item.src       | d(omit) }}'
-    content:  '{{ item.content   | d(omit) }}'
+    src:      '{{ item.src | d(omit) }}'
+    content:  '{{ item.content | d(omit) }}'
     owner:    'root'
     group:    'root'
     mode:     '0644'
-  with_items: '{{ q("flattened", apt__conf, apt__group_conf, apt__host_conf + apt__dependent_conf)}}'
-  when: (apt__enabled | bool  and
+  with_items: '{{ q("flattened", apt__conf, apt__group_conf, apt__host_conf + apt__dependent_conf) }}'
+  when: (apt__enabled | bool and
          (item.src | d() or item.content | d()) and
          (item.dest | d() or item.path | d() or item.name | d()) and
          (item.state | d('present') != 'absent'))

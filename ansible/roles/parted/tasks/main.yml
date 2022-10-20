@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # - name: Install required packages
-#   package:
+#   ansible.builtin.package:
 #     name: '{{ (parted__base_packages + parted__packages) | flatten }}'
 #     state: 'present'
 #   register: parted__register_packages
@@ -23,7 +23,7 @@
 #   with_items: "{{ additional_disks }}"
 
 - name: Create partitions
-  community.general.parted:    
+  community.general.parted:
     device: >-
       {{ parted_disk.device }}
     align: >-
@@ -72,7 +72,7 @@
     label: "{{ parted_disk.device }}{{ parted_disk.number }}"
 
 - name: "Creating filesystems on disks ..."
-  filesystem:
+  community.general.filesystem:
     fstype: "{{ parted_disk.fstype }}"
     dev: "{{ parted_disk.device }}{{ parted_disk.number }}"
   loop: "{{ parted_disks_to_manage }}"

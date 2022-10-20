@@ -6,23 +6,23 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Refresh host facts
-  setup:
+  ansible.builtin.setup:
 
 - name: Reload systemd daemon
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: True
   listen:
     - 'Reload service manager'
   when: ansible_service_mgr == 'systemd'
 
 - name: Create temporary files with systemd-tmpfiles
-  command: 'systemd-tmpfiles --create'
+  ansible.builtin.command: 'systemd-tmpfiles --create'
   listen:
     - 'Create temporary files'
   when: ansible_service_mgr == 'systemd'
 
 - name: Reboot after full upgrade
-  reboot:
+  ansible.builtin.reboot:
     msg: "Reboot initiated by Ansible after full packages upgrade"
     connect_timeout: 5
     reboot_timeout: 600
