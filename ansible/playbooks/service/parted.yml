@@ -14,6 +14,16 @@
                    | combine(inventory__host_environment  | d({})) }}'
 
   roles:
-
+    - role: select_hostvars
+      vars:
+        select_hostvars_query:
+          pattern: "^parted_disks_.*"
+          exclude_pattern: "^parted_disks_defaults$"
+          attributes:
+            - device
+          fact_name: parted_disks_hostvars
+          output_type: list
+      when: parted_disks_load_from_hostvars | bool
+      tags: [ 'role::select_hostvars', 'skip::select_hostvars' ]
     - role: parted
       tags: [ 'role::parted', 'skip::parted' ]

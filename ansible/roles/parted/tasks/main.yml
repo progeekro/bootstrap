@@ -5,23 +5,6 @@
 # Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-# - name: Install required packages
-#   ansible.builtin.package:
-#     name: '{{ (parted__base_packages + parted__packages) | flatten }}'
-#     state: 'present'
-#   register: parted__register_packages
-#   until: parted__register_packages is succeeded
-#   when: parted__enabled | bool
-
-# - name: "Creating partitions on disks ..."
-#   parted:
-#     device: "{{ item.disk }}"
-#     number: "{{ item.number }}"
-#     state: "{{ item.state }}"
-#     part_start: "{{ item.part_start }}"
-#     part_end: "{{ item.part_end }}"
-#   with_items: "{{ additional_disks }}"
-
 - name: Create partitions
   community.general.parted:
     device: >-

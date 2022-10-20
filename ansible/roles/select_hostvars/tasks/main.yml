@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Setup fact with values loaded from host variables  # noqa var-naming
-  set_fact:
+  ansible.builtin.set_fact:
     "{{ select_hostvars_query.fact_name }}": >-
       {{ lookup('template', 'hostvars.yml.j2') | from_yaml }}
   when: select_hostvars_query is defined

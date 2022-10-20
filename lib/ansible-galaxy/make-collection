@@ -416,7 +416,7 @@ for collection in "${collections[@]}" ; do
         pushd "${workdir_map[${collection}]}" > /dev/null
         ansible-galaxy collection build
         python3 -m galaxy_importer.main progeekro-*.tar.gz
-        cp progeekro-*.tar.gz ../
+        cp progeekro-*.tar.gz ../${repository_root}
         popd > /dev/null
     fi
 done

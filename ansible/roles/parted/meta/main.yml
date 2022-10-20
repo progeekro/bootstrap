@@ -54,14 +54,4 @@ galaxy_info:
     # NOTE: A tag is limited to a single word comprised of alphanumeric characters.
     #       Maximum 20 tags per role.
 
-dependencies:
-  - role: select_hostvars
-    vars:
-      select_hostvars_query:
-        pattern: "^parted_disks_.*"
-        exclude_pattern: "^parted_disks_defaults$"
-        attributes:
-          - device
-        fact_name: parted_disks_hostvars
-        output_type: list
-    when: parted_disks_load_from_hostvars | bool
+dependencies: []
