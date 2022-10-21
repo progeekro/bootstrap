@@ -136,6 +136,7 @@
     dest: /var/local/machine/
     owner: 'root'
     group: 'root'
+    mode: '0755'
   when: machine__tweaks_enabled | bool
 
 - name: Install the machine tweaks in profile.d

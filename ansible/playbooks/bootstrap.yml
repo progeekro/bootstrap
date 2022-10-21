@@ -43,26 +43,38 @@
         tasks_from: 'main_raw'
       tags: [ 'role::python_raw', 'skip::python_raw', 'role::python' ]
 
-- import_playbook: 'service/apt.yml'
+- name: Import APT role
+  import_playbook: 'service/apt.yml'
 
-- import_playbook: 'service/bootstrap.yml'
+- name: Import Bootstrap role
+  import_playbook: 'service/bootstrap.yml'
 
-- import_playbook: 'service/microserver_gen8.yml'
+- name: Import HP Microserver Gen8 role
+  import_playbook: 'service/microserver_gen8.yml'
 
-- import_playbook: 'service/t620.yml'
+- name: Import HP T620 role
+  import_playbook: 'service/t620.yml'
 
-- import_playbook: 'service/parted.yml'
+- name: Import Parted role
+  import_playbook: 'service/parted.yml'
 
-- import_playbook: 'service/mount.yml'
+- name: Import Mount role
+  import_playbook: 'service/mount.yml'
 
-- import_playbook: 'service/ntp.yml'
+- name: Import NTP role
+  import_playbook: 'service/ntp.yml'
 
-- import_playbook: 'service/tzdata.yml'
+- name: Import Tzdata role
+  import_playbook: 'service/tzdata.yml'
 
-- import_playbook: 'service/lldpd.yml'
+- name: Import LLDPD role
+  import_playbook: 'service/lldpd.yml'
 
-- import_playbook: 'service/hddtemp.yml'
+- name: Import Hddtemp role
+  import_playbook: 'service/hddtemp.yml'
 
-- import_playbook: 'service/smartmontools.yml'
+- name: Import Smartmontools role
+  import_playbook: 'service/smartmontools.yml'
 
-- import_playbook: 'service/machine.yml'
+- name: Import Machine role
+  import_playbook: 'service/machine.yml'
