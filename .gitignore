@@ -26,10 +26,10 @@ tramp
 __pycache__/
 *.py[cod]
 *$py.class
-debops.egg-info/
+progeek.egg-info/
 dist/
 build/
-src/debops/__version__.py
+src/progeek/__version__.py
 VERSION
 
 # C extensions
