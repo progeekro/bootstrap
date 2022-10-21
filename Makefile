@@ -184,10 +184,7 @@ test-playbook-syntax:
 	@printf "%s\n" "Testing Ansible playbook syntax..."
 	@ANSIBLE_ROLES_PATH="ansible/roles" ANSIBLE_HOST_PATTERN_MISMATCH=ignore \
 	 ANSIBLE_COLLECTIONS_PATH="ansible/collections" \
-	 ansible-playbook --syntax-check ansible/playbooks/bootstrap.yml \
-		                         ansible/playbooks/bootstrap-ldap.yml \
-		                         ansible/playbooks/bootstrap-sss.yml \
-		                         ansible/playbooks/site.yml
+	 ansible-playbook --syntax-check ansible/playbooks/bootstrap.yml
 
 .PHONY: test-ansible-lint
 test-ansible-lint:

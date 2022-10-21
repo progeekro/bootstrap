@@ -34,3 +34,4 @@ tags:
 
 dependencies:
   "ansible.posix": "*"
+  "community.general.parted": "*"

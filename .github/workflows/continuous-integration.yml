@@ -45,6 +45,7 @@ jobs:
           sudo apt-get remove --purge -yq ansible
           pip3 install --upgrade pip wheel setuptools
           pip3 install --user --upgrade Jinja2 ansible ansible-lint
+          ansible-galaxy collection install community.general
 
       - name: Verify playbook with ansible-lint
         run: |
@@ -67,6 +68,7 @@ jobs:
           sudo apt-get remove --purge -yq ansible
           pip3 install --user --upgrade pip wheel setuptools
           pip3 install --user --upgrade Jinja2 ansible
+          ansible-galaxy collection install community.general
 
       - name: Check playbook syntax with ansible-playbook
         run: |
@@ -93,6 +95,7 @@ jobs:
           sudo apt-get remove --purge -yq ansible
           pip3 install --user --upgrade pip wheel setuptools
           pip3 install --user --upgrade Jinja2 ansible ansible-lint yamllint galaxy-importer reuse
+          ansible-galaxy collection install community.general
 
       - name: Build ProGeek Collections for Ansible Galaxy
         env:
