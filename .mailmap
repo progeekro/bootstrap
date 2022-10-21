@@ -1,0 +1,20 @@
+# Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+# Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# The .mailmap configuration file
+#
+# This list is used by git-shortlog to fix a few botched name translations
+# in the git archive, either because the author's full name was messed up and/or
+# not always written the same way, making contributions from the same person
+# appearing not to be so or badly displayed.
+#
+# To check the summary of user contributions, you can execute:
+#
+#     git shortlog -sne
+#
+# Users with e-mail addresses in the '@users.noreply.github.com' domain created
+# commits via the GitHub web interface. These e-mails should preferably be
+# replaced by the real user e-mail addresses.
+
+Zaharia Constantin <constantin.zaharia@progeek.ro> Zaharia Constantin <layout.webdesign@gmail.com>

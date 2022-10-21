@@ -7,7 +7,7 @@
 # Build an Ansible Galaxy collection tarball with Ansible artifacts
 # Usage: run "make collection" in the root of the repository
 
-# set -o nounset -o pipefail -o errexit
+set -o nounset -o pipefail -o errexit
 
 repository_root="$(git rev-parse --show-toplevel)"
 current_branch="${CURRENT_BRANCH:-$(git name-rev --name-only HEAD)}"
