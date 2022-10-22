@@ -73,8 +73,9 @@ tags
 ### Ignore any Ansible inventory ###
 inventory
 
-./ansible.cfg
+/ansible.cfg
 get_helm.sh
 vault_host_vars_encrypt.sh
 pass-vault.txt
 hosts_list.csv
+
