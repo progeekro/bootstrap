@@ -404,9 +404,17 @@ EOF
         cat <<EOF >> "${workdir_map[${collection}]}/galaxy.yml"
 
 tags:
+  - "debian"
+  - "ubuntu"
   - "progeekro"
+  - "sysadmin"
+  - "cluster"
+  - "datacenter"
 
-dependencies: {}
+dependencies
+  "ansible.posix": "*"
+  "community.crypto": "*"
+  "community.general": "*"
 EOF
     fi
 done
