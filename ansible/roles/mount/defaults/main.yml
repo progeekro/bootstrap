@@ -18,14 +18,14 @@ mount__devices: []
 # Dict with the defaults options to use if no other ones are specified in
 # the `mount__devices` variable. The members of the dict are the same attributes
 # that the ones expected by the ansible parted module
-mount_devices_defaults: {}
+mount__devices_defaults: {}
 
-# Indicate `mount_devices` must be loaded also from host variables. Any host
-# variable that begins with "mount_devices_*" and contains the necessary
+# Indicate `mount__devices` must be loaded also from host variables. Any host
+# variable that begins with "mount__devices_*" and contains the necessary
 # attributes will be loaded as an item to manage by the role. The variables must
-# follow the structure detailed before for `mount_default_devices`
-mount_devices_load_from_hostvars: False
+# follow the structure detailed before for `mount__default_devices`
+mount__devices_load_from_hostvars: False
 
-mount_disks_to_manage: >-
-    {{ mount__devices + ((mount_devices_load_from_hostvars | bool) |
-        ternary(mount_devices_hostvars | default([]) | flatten, [])) }}
+mount__disks_to_manage: >-
+    {{ mount__devices + ((mount__devices_load_from_hostvars | bool) |
+        ternary(mount__devices_hostvars | default([]) | flatten, [])) }}

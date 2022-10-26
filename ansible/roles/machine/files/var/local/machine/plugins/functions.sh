@@ -31,26 +31,27 @@ extract () {
 }
 
 dls () {
- # dls will list directories instead of files in the current working directory. 
- echo `ls -l | grep "^d" | awk '{ print $9 }' | tr -d "/"`
+    # dls will list directories instead of files in the current working directory.
+    # shellcheck disable=SC2010
+    ls -l | grep '^d' | awk '{ print $9 }' | tr -d '/'
 }
 
 dgrep() {
     # A recursive, case-insensitive grep that excludes binary files
-    grep -iR "$@" * | grep -v "Binary"
+    grep -iR "$@" -- * | grep -v "Binary"
 }
 
 dfgrep() {
     # A recursive, case-insensitive grep that excludes binary files
     # and returns only unique filenames
-    grep -iR "$@" * | grep -v "Binary" | sed 's/:/ /g' | awk '{ print $1 }' | sort | uniq
+    grep -iR "$@" -- * | grep -v "Binary" | sed 's/:/ /g' | awk '{ print $1 }' | sort | uniq
 }
 
 psgrep() {
     # pgrep, it shows the entire line of ps rather than just the PID
-    if [ ! -z "$1" ] ; then
+    if [ -n "$1" ] ; then
         echo "Grepping for processes matching $1..."
-        ps aux | grep "$1" | grep -v grep
+        pgrep -a -f "$1"
     else
         echo "!! Need name to grep for"
     fi
@@ -58,7 +59,7 @@ psgrep() {
 
 killit() {
     # Kills any process that matches a regexp passed to it
-    ps aux | grep -v "grep" | grep "$@" | awk '{print $2}' | xargs sudo kill
+    pgrep -f "$@" | xargs sudo kill
 }
 
 # make a dir and cd into it
@@ -86,20 +87,21 @@ mvcd () {
 
 portslay () {
     # If you need to kill a process on a particular port, but you don't know the process, portslay handles that.
-    kill -9 `lsof -i tcp:$1 | tail -1 | awk '{ print $2;}'`
+    kill -9 "$(lsof -i tcp:"$1" | tail -1 | awk '{ print $2;}')"
 }
 
 # Network utils
 
 shell () {
-  ps | pgrep `echo $$` | awk '{ print $4 }'
+  ps | pgrep "$$" | awk '{ print $4 }'
 }
 
 lso () {
-  # display the permision in octal format
-  ls -l "$@" | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print}';
+    #TODO: Find some new variants, test versions with stats
+    # display the permision in octal format
+    # shellcheck disable=SC2012
+    ls -l "$@" | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print}';
 }
-
 
 ####
 # Docker utils functions
@@ -119,7 +121,8 @@ docker_rmi_tag() {
 function workon_cwd {
     # Check that this is a Git repo
     GIT_DIR=$(git rev-parse --git-dir 2> /dev/null)
-    if [ $? == 0 ]; then
+    # shellcheck disable=2181
+    if [ "$?" -ne 0 ]; then
         # Find the repo root and check for virtualenv name override
         GIT_DIR=$(cd "$GIT_DIR"|| pwd)
         PROJECT_ROOT=$(dirname "$GIT_DIR")
@@ -168,16 +171,16 @@ size () {
     fi
     local -i whole=${1:-0}
     local -i remainder=0
-    while (( whole >= $scale ))
+    while (( whole >= "$scale" ))
     do
         remainder=$(( whole % scale ))
         whole=$((whole / scale))
-        unit=$(( $unit + 1 ))
+        unit=$(( "$unit" + 1 ))
     done
     local decimal
     if [ $remainder -gt 0 ]
     then
-        local -i fraction="$(( (remainder * 10 / scale)))"
+        local -i fraction="$(( remainder * 10 / scale ))"
         if [ "$fraction" -gt 0 ]
         then
             decimal=".$fraction"
@@ -188,12 +191,12 @@ size () {
 
 # Converts 40:b0:76:a3:36:54 to 40-B0-76-A3-36-54 format
 mac_to_dashes() {
-    echo $1 | sed s/:/-/g | tr a-f A-F
+    echo "$1" | sed s/:/-/g | tr a-f A-F
 }
 
 # Converts 40-B0-76-A3-36-54 to 40:b0:76:a3:36:54 format
 mac_to_colons() {
-    echo $1 | sed s/-/:/g | tr A-F a-f
+    echo "$1" | sed s/-/:/g | tr A-F a-f
 }
 
 # Git aliases (technically, functions)
@@ -203,8 +206,8 @@ gfa() {
 
 grb() {
     case $1 in
-        ''|*[!0-9]*) git rebase $1 ;;
-        *) git rebase -i HEAD~$1 ;;
+        ''|*[!0-9]*) git rebase "$1" ;;
+        *) git rebase -i HEAD~"$1" ;;
     esac
 }
 
@@ -213,36 +216,36 @@ grbc() {
 }
 
 grbm() {
-    local _branches=$(git branches --remote)
+    _branches=$(git branches --remote)
 
     if printf '%s' "$_branches" | grep -q 'upstream/main '; then
-        git rebase upstream/main $*
+        git rebase upstream/main "$*"
     elif printf '%s' "$_branches" | grep -q 'upstream/master '; then
-        git rebase upstream/master $*
+        git rebase upstream/master "$*"
     elif printf '%s' "$_branches" | grep -q 'origin/main '; then
-        git rebase origin/main $*
+        git rebase origin/main "$*"
     else
-        git rebase origin/master $*
+        git rebase origin/master "$*"
     fi
 }
 
 # 'git checkout master' for a particular file
 gcm() {
-    local _branches=$(git branches --remote)
+    _branches=$(git branches --remote)
 
     if printf '%s' "$_branches" | grep -q 'upstream/main '; then
-        git checkout upstream/main $*
+        git checkout upstream/main "$*"
     elif printf '%s' "$_branches" | grep -q 'upstream/master '; then
-        git checkout upstream/master $*
+        git checkout upstream/master "$*"
     elif printf '%s' "$_branches" | grep -q 'origin/main '; then
-        git checkout origin/main $*
+        git checkout origin/main "$*"
     else
-        git checkout origin/master $*
+        git checkout origin/master "$*"
     fi
 }
 
 grm() {
-    git rm $*
+    git rm "$*"
 }
 
 # systemctl will gain a new log "verb" that provides the missing 

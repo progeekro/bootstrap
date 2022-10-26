@@ -6,6 +6,9 @@
 # Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+# TODO: or future check if the solution for remove unwanted MOTD scrips is viable
+# https://github.com/reefland/ansible-motd-zfs-smartd/blob/master/tasks/02_setup_motd.yml
+
 - name: Import global handlers
   ansible.builtin.import_role:
     name: 'global_handlers'

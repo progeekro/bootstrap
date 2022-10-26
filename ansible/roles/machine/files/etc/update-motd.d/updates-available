@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck disable=all
 
 stamp="/var/lib/update-notifier/updates-available"
 

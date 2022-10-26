@@ -40,7 +40,7 @@ import os
                    { repo.distribution: (
                        (apt__tpl_default_sources_map[repo.distribution]
                        | d([])) + repo_uris) }) %}
-{%   endif %}
+{% endif %}
 {% endfor %}
 """
 

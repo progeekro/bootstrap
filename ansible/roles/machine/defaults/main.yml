@@ -92,8 +92,8 @@ machine__motd_default_scripts:
     state: 'present'
   - name: 'uptime'
     weight: 20
-    src: 'etc/update-motd.d/uptime'
-    state: 'present'
+    src: 'etc/update-motd.d/uptime' # not used in default config
+    state: 'absent'
   - name: 'diskspace'
     weight: 35
     src: 'etc/update-motd.d/diskspace'

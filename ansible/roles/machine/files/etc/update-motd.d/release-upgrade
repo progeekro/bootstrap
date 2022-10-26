@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck disable=all
 
 # if the current release is under development there won't be a new one
 if [ "$(lsb_release -sd | cut -d' ' -f4)" = "(development" ]; then

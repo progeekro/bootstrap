@@ -19,7 +19,8 @@ import os
 {% set device_letters = [] %}
 {% set disk_devices = lsblk_devices.stdout.splitlines()|map('trim')|list %}
 
-# Get the last device letter from each active device, this is needed for hddtmp monitoring
+# Get the last device letter from each active device,
+# this is needed for hddtmp monitoring
 # If "disk_devices" contains ['sda','sdb','sdc'] then device_letters is "abc"
 # Devices ending in numbers like nvme1 which are not supported are skipped
 {% if hddtemp__enabled | bool %}
@@ -33,17 +34,18 @@ import os
 
 {% set _ = hddtemp__tpl_facts.update({ "configured": True }) %}
 
-{% set _ = hddtemp__tpl_facts.update({ "enabled": 
-    hddtemp__enabled | bool }) %}
+{% set _ = hddtemp__tpl_facts.update({ "enabled": hddtemp__enabled | bool }) %}
 
-{% set _ = hddtemp__tpl_facts.update({ "disk_devices":
-    disk_devices }) %}
+{% set _ = hddtemp__tpl_facts.update({ "disk_devices": disk_devices }) %}
 
-# hddtemp can only take a limited number of devices; which is a limit on the number of
-# parameters which can be passed via the command line.  Break up the disk device list 
-# into chunks the size defined by "hddtemp__num_devices"
-{% set _ = hddtemp__tpl_facts.update({ "device_letters":
-    device_letters | regex_findall('.{1,' + hddtemp__num_devices|string +'}') }) %}
+# hddtemp can only take a limited number of devices;
+# which is a limit on the number of
+# parameters which can be passed via the command line.
+# Break up the disk device list into chunks the size defined by
+# "hddtemp__num_devices"
+{% set _ = hddtemp__tpl_facts.update({
+    "device_letters": device_letters |
+    regex_findall('.{1,' + hddtemp__num_devices|string +'}') }) %}
 
 """
 

@@ -91,7 +91,7 @@ bind "set mark-symlinked-directories on"
 #auto expand ! variants upon space
 bind "Space:magic-space"
 
-SHOPT=$(which shopt)
+SHOPT=$(command -v shopt)
 if [ -z "${SHOPT}" ]; then
   shopt -s histappend        # Append history instead of overwriting
   

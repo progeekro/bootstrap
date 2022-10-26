@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=all
 
 # Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
 # Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
@@ -9,7 +10,7 @@ LC_ALL=C
 LC_NUMERIC=C
 
 include () {
-    [[ -f "$1" ]] && source "$1"
+    [[ -f $1 ]] && source $1
 }
 
 include /var/local/machine/plugins/colors.sh
@@ -18,7 +19,7 @@ include /var/local/machine/plugins/functions.sh
 # set column width
 COLUMNS=3
 
-services=("fail2ban" "netdata" "smartd" "postfix")
+services=("fail2ban" "ferm" "netdata" "smartd" "lldpd" "chronyd")
 # sort services
 IFS=$'\n' services=($(sort <<<"${services[*]}"))
 unset IFS

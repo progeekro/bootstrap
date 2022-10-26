@@ -8,8 +8,8 @@
 - name: Test if additional_disks is set correctly
   ansible.builtin.assert:
     that:
-      - mount_disks_to_manage
-      - mount_disks_to_manage|length > 0
+      - mount__disks_to_manage
+      - mount__disks_to_manage|length > 0
     quiet: yes
 
 - name: Test if item.path in additional_disks is set correctly
@@ -18,7 +18,7 @@
       - item.path is defined
       - item.path is string
     quiet: yes
-  loop: "{{ mount_disks_to_manage }}"
+  loop: "{{ mount__disks_to_manage }}"
   loop_control:
     label: "{{ item.path }}"
 
@@ -30,6 +30,6 @@
     quiet: yes
   when:
     - item.state is defined
-  loop: "{{ mount_disks_to_manage }}"
+  loop: "{{ mount__disks_to_manage }}"
   loop_control:
     label: "{{ item.path }}"

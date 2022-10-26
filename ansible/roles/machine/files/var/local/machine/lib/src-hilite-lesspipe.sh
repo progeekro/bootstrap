@@ -46,8 +46,8 @@ set -eu
 SRCLANG=${SRCLANG:-}
 
 guess_language() {
-  lang=$(echo -e ${1:-} | file - | cut -d" " -f2)
-  echo $(tr [A-Z] [a-z] <<< "$lang")
+  lang=$(echo -e "${1:-}" | file - | cut -d" " -f2)
+  tr '[:upper:]' '[:lower:]' <<< "$lang"
 }
 
 # check if the language passed as $1 is known to source-highlight
@@ -84,6 +84,7 @@ for source in "$@"; do
         # unset IFS so line breaks are preserved and capture the file's contents
         # (will only work for files up to bash's available memory). There should
         # be a better way to replicate this with tee or process substitution...
+        # shellcheck disable=SC2015,SC2050
         IFS= file=$([ "source" = "-" ] && cat || cat "$source")
         lang=$(guess_language "$file")
         lang=$(check_language_is_known "$lang")
@@ -99,7 +100,7 @@ for source in "$@"; do
         [ -n "$SRCLANG" ] && lang="$SRCLANG"
 
         if [ -n "$lang" ]; then
-          echo "$file" | source-highlight --failsafe -f esc --src-lang=$lang --style-file=esc.style
+          echo "$file" | source-highlight --failsafe -f esc --src-lang="$lang" --style-file=esc.style
         else
           echo "$file"
         fi

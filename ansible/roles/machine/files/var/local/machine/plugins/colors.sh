@@ -38,11 +38,11 @@ FANCYX='\[\342\234\]\227'       # Fancy X symbol                          |
 CHECKMARK='\[\342\234\]\223'    # Check mark symbol                       |
 #------------------------{ Functions }------------------------------------+
 # Text positioning, usage: XY 10 10 'Hello World!'                        |
-XY(){ printf "\e[$2;${1}H$3"; }                                          #|
+XY(){ printf "%s" "\e[$2;${1}H$3"; }                                     #|
 # Print line, usage: line - 10 | line -= 20 | line 'Hello World!' 20      |
-line(){ printf -v _L %$2s; printf -- "${_L// /$1}"; }                    #|
+line(){ printf -v _L %"$2"s; printf -- "%s" "${_L// /$1}"; }             #|
 # Create sequence like {0..(X-1)}, usage: que 10                          |
-que(){ printf -v _N %$1s; _N=(${_N// / 1}); printf "${!_N[*]}"; }        #|
+que(){ printf -v _N %"$1"s;_N=("${_N// / 1}");printf "%s" "${!_N[*]}"; } #|
 #-------------------------------------------------------------------------+
 
 function readline_ANSI_escape() {
@@ -57,6 +57,7 @@ function readline_ANSI_escape() {
 # To have colors for ls and all grep commands such as grep, egrep and zgrep
 export CLICOLOR=1
 
+# shellcheck source=/dev/null
 [[ -f "${colors_data_dir}/lscolors/lscolors.sh" ]] && source "${colors_data_dir}/lscolors/lscolors.sh"
 
 #[[ -f "${colors_data_dir}/dircolors/$DIR_COLORS_THEME" ]] && eval "$(dircolors -b ${colors_data_dir}/dircolors/$DIR_COLORS_THEME)"

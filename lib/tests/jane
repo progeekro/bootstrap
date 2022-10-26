@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=all
 
 # Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
 # Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
@@ -8,7 +9,6 @@
 # Perform Ansible role tests using GitLab CI and Vagrant
 
 set -o nounset -o pipefail -o errexit
-
 
 require_bash_4 () {
     if (( BASH_VERSINFO[0] < 4 )) ; then

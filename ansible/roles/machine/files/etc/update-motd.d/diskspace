@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=all
 
 # Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
 # Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
@@ -10,7 +11,7 @@ LC_ALL=C
 LC_NUMERIC=C
 
 include () {
-    [[ -f "$1" ]] && source "$1"
+    [[ -f $1 ]] && source $1
 }
 
 include /var/local/machine/plugins/colors.sh

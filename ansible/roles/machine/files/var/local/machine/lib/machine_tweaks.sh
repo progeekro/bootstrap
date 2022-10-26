@@ -12,11 +12,13 @@ DIR_COLORS_THEME='dircolors.256dark' # choices: dircolors.256dark, dircolors.ans
 export TWEAKS_DIR=/var/local/machine
 
 function machine_tweaks__import() {
-  [[ -f $1 ]] && source $1 || echo ":: Machine Tweaks failed to import file $1"
+  # shellcheck source=/dev/null
+  [[ -f "$1" ]] && source "$1" || echo ":: Machine Tweaks failed to import file $1"
 }
 
 mapfile files <<< "$(find ${TWEAKS_DIR}/plugins -name '*.sh' ! -type d)"
 for file in "${files[@]}";do
+  # shellcheck disable=SC2086
   machine_tweaks__import $file
 done
 

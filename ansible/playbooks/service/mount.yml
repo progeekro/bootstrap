@@ -14,6 +14,15 @@
                    | combine(inventory__host_environment  | d({})) }}'
 
   roles:
-
+    - role: select_hostvars
+      vars:
+        select_hostvars_query:
+          pattern: "^mount__devices_.*"
+          exclude_pattern: "^mount__devices_defaults$"
+          attributes:
+            - device
+          fact_name: mount__devices_hostvars
+          output_type: list
+      when: mount__devices_load_from_hostvars | bool
     - role: mount
       tags: [ 'role::mount', 'skip::mount' ]

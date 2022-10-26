@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=all
 
 # Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
 # Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
@@ -19,12 +20,11 @@
 # VERSION    : 1.8.0
 ##############################################################################
 
-set -euo pipefail
 LC_ALL=C
 LC_NUMERIC=C
 
 include () {
-    [[ -f "$1" ]] && source "$1"
+    [[ -f $1 ]] && source "$1"
 }
 
 include /var/local/machine/plugins/colors.sh
@@ -74,7 +74,7 @@ sed_filter="s/^scsi-SATA_//; s/^ata-//; s/Series_//; s/^nvme-//;"
 notdisks="part[0-9]|sr[0-9]|/dm-|/md-|total"
 
 # Collect all disk devices which don't match "notdisks"
-alldisks=$(find /dev/disk/by-id/ -type l -printf "%p %l\n" | sort -k 2  | awk -F/ -v a="$notdisks" '$0 !~ a  { print }')
+alldisks=$(find /dev/disk/by-id/ -type l -printf "%p %l\n" | sort -k 2 | awk -F/ -v a="$notdisks" '$0 !~ a  { print }')
 
 # Dynamically generate simple disk names available (sda, sdb, sdc, ...)  these change if disks are removed
 disksalias=$(echo "${alldisks[@]}" | awk -F/ -v a="$findthese" -v b="$ignorethese" '$0 ~ a && $0 !~ b { print $7 }' | uniq);disksalias=($disksalias)
@@ -84,34 +84,28 @@ disksalias=$(echo "${alldisks[@]}" | awk -F/ -v a="$findthese" -v b="$ignorethes
 # This will remove any duplicate devices.
 rawdisks=$(echo "${alldisks[@]}" | awk -F'[/ ]' -v a="$findthese" -v b="$ignorethese" '$0 ~ a && $0 !~ b { print $5}' | rev | uniq -w 15 | rev);rawdisks=($rawdisks)
 
-# Clean-up disk names to display with sed_filter 
-disks=$(printf '%s\n' "${rawdisks[@]}"|sed "$sed_filter");disks=($disks)
+# Clean-up disk names to display with sed_filter
+disks=$(printf '%s\n' "${rawdisks[@]}" | sed "$sed_filter");disks=($disks)
 
 # Grab a shorter subset of the name. It will return everything to the LEFT of the right-most "_"
 shortnames=$(printf '%s\n' "${disks[@]}" | sed -r 's/^(.*)_.*$/\1/');shortnames=($shortnames)
 
 # Dynamically grab last 4 digits of disk serial number
-diskserials=$(printf '%s\n' "${disks[@]}"| sed -r 's/.*(....)$/\1/');diskserials=($diskserials)
+diskserials=$(printf '%s\n' "${disks[@]}" | sed -r 's/.*(....)$/\1/');diskserials=($diskserials)
 #-------------------------------------------------------------------------------
 
 # get all lines with smartd entries from syslog
-lines=$(tac $logfiles 2>/dev/null | grep -hiP 'smartd.*previous self-test')
+lines=$(tac $logfiles 2>/dev/null | grep -ahiP 'smartd.*previous self-test')
 
-# use nc to query temps from each hddtemp daemon instance, echo needed to get NC to return data
-fetch_hddtemp=$(echo -n | nc $hddtemp_host $hddtemp_port |sed 's/|//m' | sed 's/||/ \n/g')
-
-# See if we got any hddtemp data to work with
-if [[ ! -z $fetch_hddtemp ]]; then
-  while [[ -n $fetch_hddtemp ]]
-  do
-    hddtemp+=$fetch_hddtemp
-    hddtemp_port=$((hddtemp_port+1))
-    fetch_hddtemp=$(echo -n | nc $hddtemp_host $hddtemp_port |sed 's/|//m' | sed 's/||/ \n/g')
-  done
-else
-  # This value is not tested for, might be handy in debugging
-  hddtemp="none"
-fi
+# count hddtemp runing daemons
+count_hddtemp=$(pgrep hddtemp | wc -l)
+hddtemp="none"
+for (( i=0; i<count_hddtemp; i++ )); do
+  hddtemp_port=$((hddtemp_port+i))
+  # use nc to query temps from each hddtemp daemon instance, echo needed to get NC to return data
+  fetch_hddtemp=$(echo -n | nc $hddtemp_host $hddtemp_port | sed 's/|//m' | sed 's/||/ \n/g')
+  hddtemp+=$fetch_hddtemp
+done
 
 out=""
 

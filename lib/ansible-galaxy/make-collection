@@ -50,7 +50,7 @@ fi
 
 printf "Creating ProGeek Collections\\nBranch: %s\\nVersion: %s\\nCalculating role distribution...\\n" "${current_branch}" "${current_version}"
 
-cd "${repository_root}"
+cd "${repository_root}" || exit
 
 for role in ansible/roles/* ; do
     if [ -d "${role}" ] ; then
@@ -85,7 +85,7 @@ done
 # Check what role dependencies are defined in the playbook of a given role.
 # For each dependency, add the weight of the current role.
 for role in "${!progeekro_role_map[@]}" ; do
-
+    # shellcheck disable=SC2086
     if [ -f "ansible/playbooks/service/${role}.yml" ] ; then
         read -r -a dependencies_in_playbooks <<<"$(git grep -h --word-regexp -e "role::.*" \
                                                             --and --not -e "role::${role}" \
@@ -258,7 +258,7 @@ mkdir -p "${workdir_map[${collections[0]}]}/playbooks" \
 
 # Copy ProGeek roles to the Ansible Collection build directory.
 # Omit specific ProGeek roles from Ansible Collections.
-pushd ansible/roles > /dev/null
+pushd ansible/roles > /dev/null || exit
 for collection in "${collections[@]}" ; do
     printf "Creating collection 'progeekro.%s'\\n" "${collection}"
     read -r -a collection_roles <<<"${role_collection_map[${collection}]}"
@@ -293,7 +293,7 @@ EOF
         fi
     done
 done
-popd > /dev/null
+popd > /dev/null || exit
 
 # Copy ProGeek playbooks into the collection
 cp -r ansible/playbooks/* "${workdir_map[${collections[0]}]}/playbooks"
@@ -421,11 +421,11 @@ done
 
 for collection in "${collections[@]}" ; do
     if [ -d "${workdir_map[${collection}]}" ] ; then
-        pushd "${workdir_map[${collection}]}" > /dev/null
+        pushd "${workdir_map[${collection}]}" > /dev/null || exit
         ansible-galaxy collection build
         python3 -m galaxy_importer.main progeekro-*.tar.gz
         cp progeekro-*.tar.gz ../
-        popd > /dev/null
+        popd > /dev/null || exit
     fi
 done
 

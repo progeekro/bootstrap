@@ -18,16 +18,16 @@ import os
 
 {% set _ = bootstrap__tpl_facts.update({ "configured": True }) %}
 
-{% set _ = bootstrap__tpl_facts.update({ "enabled": 
+{% set _ = bootstrap__tpl_facts.update({ "enabled":
     bootstrap__enabled | bool }) %}
 
-{% set _ = bootstrap__tpl_facts.update({ "swapStatus": 
+{% set _ = bootstrap__tpl_facts.update({ "swapStatus":
     bootstrap_swapon_show.stdout }) %}
 
-{% set _ = bootstrap__tpl_facts.update({ "swapEnabled": 
+{% set _ = bootstrap__tpl_facts.update({ "swapEnabled":
     bootstrap__swap_enabled | bool }) %}
 
-{% set _ = bootstrap__tpl_facts.update({ "tmpEnabled": 
+{% set _ = bootstrap__tpl_facts.update({ "tmpEnabled":
     bootstrap__tmp_enabled | bool }) %}
 
 

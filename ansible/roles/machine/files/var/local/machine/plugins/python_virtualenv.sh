@@ -5,10 +5,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 
-virtualenv_path="$(which virtualenv)"
+virtualenv_path="$(command -v virtualenv)"
 virtualenvwrapper_path='/usr/local/bin/virtualenvwrapper.sh'
 
-if [ -x $virtualenv_path ]; then
+if [ -x "$virtualenv_path" ]; then
   VIRTUALENVWRAPPER_PYTHON=$virtualenv_path
   export VIRTUALENVWRAPPER_PYTHON
 
@@ -19,6 +19,7 @@ if [ -x $virtualenv_path ]; then
   export PROJECT_HOME="${WORK_ZONE_APPS}"
 
   if [ -f $virtualenvwrapper_path ]; then
-    source $virtualenvwrapper_path
+    # shellcheck source=/dev/null
+    . "${virtualenvwrapper_path}"
   fi
 fi
