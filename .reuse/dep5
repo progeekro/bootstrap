@@ -13,7 +13,9 @@ Copyright: 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
            2021-2022 ProGeek <https://progeek.ro>
 License: GPL-3.0-or-later
 
-Files: lib/images/progeek.png lib/images/progeek-text.png lib/images/progeek-small.png lib/images/progeek-50x37.png
+Files: lib/images/progeek.png lib/images/progeek-text.png
+        lib/images/progeek-small.png lib/images/progeek-50x37.png
+        lib/images/favicon.ico
 Copyright: 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
            2021-2022 ProGeek <https://progeek.ro>
 License: GPL-3.0-or-later
