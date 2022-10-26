@@ -204,7 +204,7 @@ test-progeek-tools:
 .PHONY: test-progeek-ansible_plugins
 test-progeek-ansible_plugins:
 	@printf "%s\n" "Testing progeek-ansible_plugins using nose2..."
-	@python3 ansible/roles/ansible_plugins/filter_plugins/progeek_filter_plugins.py
+	@python3 ansible/plugins/filter/filter_plugins.py
 
 .PHONY: fail-if-git-dirty
 fail-if-git-dirty:
