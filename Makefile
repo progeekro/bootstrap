@@ -2,7 +2,7 @@
 # Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-# Bootstrap Makefile
+# ProGeek Makefile
 
 # Use the Bash shell by default
 SHELL := /bin/bash
@@ -83,7 +83,7 @@ lint:           ## Check Ansible roles using ansible-lint
 lint: test-ansible-lint
 
 .PHONY: test
-test:           ## Perform all Bootstrap tests
+test:           ## Perform all ProGeek tests
 test: test-all
 
 .PHONY: yaml
@@ -102,7 +102,7 @@ sdist-quiet: clean-sdist
 .PHONY: sdist-sign
 sdist-sign:     ## Create signed Python sdist package
 sdist-sign: sdist
-	@gpg --detach-sign --armor dist/bootstrap-*.tar.gz
+	@gpg --detach-sign --armor dist/progeek-*.tar.gz
 
 .PHONY: make-collection
 make-collection: clean clean-git
@@ -110,7 +110,7 @@ make-collection: clean clean-git
 
 .PHONY: clean-sdist
 clean-sdist:
-	@rm -vrf bootstrap.egg-info dist/bootstrap-*.tar.gz*
+	@rm -vrf progeek.egg-info dist/progeek-*.tar.gz*
 
 .PHONY: wheel
 wheel:          ## Create Python wheel package
@@ -124,18 +124,18 @@ wheel-quiet: clean-wheel
 .PHONY: wheel-sign
 wheel-sign:     ## Create signed Python wheel package
 wheel-sign: wheel
-	@gpg --detach-sign --armor dist/bootstrap-*.whl
+	@gpg --detach-sign --armor dist/progeek-*.whl
 
 .PHONY: clean-wheel
 clean-wheel:
-	@rm -vrf build dist/bootstrap-*.whl*
+	@rm -vrf build dist/progeek-*.whl*
 
 .PHONY: twine-upload
 twine-upload:    ## Upload Python packages to PyPI
 	@twine upload dist/*
 
 .PHONY: test-all
-test-all: clean-tests test-spdx test-pep8 test-bootstrap-tools test-bootstrap-ansible_plugins test-docs test-man test-playbook-syntax test-ansible-lint test-yaml test-shell
+test-all: clean-tests test-spdx test-pep8 test-progeek-tools test-progeek-ansible_plugins test-docs test-man test-playbook-syntax test-ansible-lint test-yaml test-shell
 
 .PHONY: test-pep8
 test-pep8:
@@ -196,15 +196,15 @@ test-yaml:
 	@printf "%s\n" "Testing YAML syntax using yamllint..."
 	@yamllint .
 
-.PHONY: test-bootstrap-tools
-test-bootstrap-tools:
-	@printf "%s\n" "Testing bootstrap-tools using nose2..."
+.PHONY: test-progeek-tools
+test-progeek-tools:
+	@printf "%s\n" "Testing progeek-tools using nose2..."
 	@type nose2-3 > /dev/null && ( nose2-3 --with-coverage ) || nose2 --with-coverage
 
-.PHONY: test-bootstrap-ansible_plugins
-test-bootstrap-ansible_plugins:
-	@printf "%s\n" "Testing bootstrap-ansible_plugins using nose2..."
-	@python3 ansible/roles/ansible_plugins/filter_plugins/bootstrap_filter_plugins.py
+.PHONY: test-progeek-ansible_plugins
+test-progeek-ansible_plugins:
+	@printf "%s\n" "Testing progeek-ansible_plugins using nose2..."
+	@python3 ansible/roles/ansible_plugins/filter_plugins/progeek_filter_plugins.py
 
 .PHONY: fail-if-git-dirty
 fail-if-git-dirty:

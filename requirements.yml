@@ -1,0 +1,15 @@
+---
+
+# .. vim: foldmarker=[[[,]]]:foldmethod=marker
+
+# Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+# Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# List of Ansible Collections required by the ProGeek Collection.
+# This file needs to be at the root of the repository for 'ansible-lint' to
+# detect it correctly.
+
+collections:
+  - 'ansible.posix'
+  - 'community.general'
