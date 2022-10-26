@@ -2,10 +2,10 @@
  .. Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
  .. SPDX-License-Identifier: GPL-3.0-or-later
 
-.. _progeek.lldpd:
+.. _progeekro.lldpd:
 
-progeek.lldpd
-============
+progeekro.lldpd
+===============
 
 .. include:: man_description.rst
    :start-line: 7
