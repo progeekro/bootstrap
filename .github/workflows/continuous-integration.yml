@@ -162,9 +162,8 @@ jobs:
       - name: Prepare test environment
         run: |
           sudo apt-get -qq update
-          sudo scversion="latest"
-          sudo wget -qO- "https://github.com/koalaman/shellcheck/releases/download/${scversion?}/shellcheck-${scversion?}.linux.x86_64.tar.xz" | tar -xJv
-          sudo cp "shellcheck-${scversion}/shellcheck" /usr/bin/
+          sudo wget -qO- "https://github.com/koalaman/shellcheck/releases/download/latest/shellcheck-latest.linux.x86_64.tar.xz" | tar -xJv
+          sudo cp "shellcheck-latest/shellcheck" /usr/bin/
 
       - name: Check shell scripts with shellcheck
         run: |
