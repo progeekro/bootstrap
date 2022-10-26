@@ -1,0 +1,8 @@
+# Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
+# Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# ReadTheDocs external requirements
+
+# Fix for https://github.com/readthedocs/readthedocs.org/issues/8616
+docutils<0.18

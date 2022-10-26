@@ -4,7 +4,7 @@
 
 [![GitHub CI][github-ci]](https://github.com/progeekro/bootstrao/actions?query=workflow%3A%22Continuous+Integration%22)
 [![GitLab CI][gitlab-ci]](https://gitlab.com/progeekro/bootstrap/pipelines)
-[![CII Best Practices][cii-best-practices]](https://bestpractices.coreinfrastructure.org/en/projects/6582)
+[![CII Best Practices][cii-best-practices]](https://bestpractices.coreinfrastructure.org/en/projects/6603)
 [![REUSE status][reuse-status]](https://api.reuse.software/info/github.com/progeekro/bootstrap)
 [![RSS commits][rss-commits]](https://github.com/progeekro/bootstrap/commits/main.atom)
 
