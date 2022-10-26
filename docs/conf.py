@@ -372,17 +372,31 @@ for element in os.listdir(rst_ansible_roles):
                           role_authors, 5))
 
 # Add the manual pages for progeek scripts
-man_pages.append(('user-guide/scripts/man_index', 'progeek',
-                  'Your Debian-based data center in a box', [author], 1))
-man_pages.append(('user-guide/scripts/progeek-project/man_index', 'progeek-project',
-                  'Create or manage a ProGeek project directory', [author], 1))
-man_pages.append(('user-guide/scripts/progeek-run/man_index', 'progeek-run',
-                  'Execute Ansible playbooks in ProGeek environments', [author], 1))
-man_pages.append(('user-guide/scripts/progeek-run/man_index', 'progeek-check',
-                  'Execute Ansible playbooks in ProGeek environments in check mode',
-                  [author], 1))
-man_pages.append(('user-guide/scripts/progeek-config/man_index', 'progeek-config',
-                  'Inspect or manipulate ProGeek project configuration', [author], 1))
+man_pages.append((
+    'user-guide/scripts/man_index',
+    'progeek',
+    'Your Debian-based data center in a box',
+    [author], 1))
+man_pages.append((
+    'user-guide/scripts/progeek-project/man_index',
+    'progeek-project',
+    'Create or manage a ProGeek project directory',
+    [author], 1))
+man_pages.append((
+    'user-guide/scripts/progeek-run/man_index',
+    'progeek-run',
+    'Execute Ansible playbooks in ProGeek environments',
+    [author], 1))
+man_pages.append((
+    'user-guide/scripts/progeek-run/man_index',
+    'progeek-check',
+    'Execute Ansible playbooks in ProGeek environments in check mode',
+    [author], 1))
+man_pages.append((
+    'user-guide/scripts/progeek-config/man_index',
+    'progeek-config',
+    'Inspect or manipulate ProGeek project configuration',
+    [author], 1))
 
 # If true, show URL addresses after external links.
 man_show_urls = True

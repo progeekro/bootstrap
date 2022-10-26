@@ -26,6 +26,8 @@ ProGeek Bootstrap
 .. |REUSE Status| image:: https://api.reuse.software/badge/github.com/progeekro/bootstrap
    :target: https://api.reuse.software/info/github.com/progeekro/bootstrap
 
+.. include:: includes/global.rst
+
 ..
  Local Variables:
  mode: rst
