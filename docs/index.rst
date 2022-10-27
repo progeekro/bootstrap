@@ -8,7 +8,7 @@
    :target: https://github.com/progeekro/bootstrap
 
 ProGeek Bootstrap
-======
+=================
 
 *Bootstrap collection for any Debian base servers*
 

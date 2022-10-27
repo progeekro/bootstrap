@@ -30,6 +30,14 @@ Networking
 
 - :ref:`progeekro.lldpd`
 
+Operating system packages
+-------------------------
+
+Configuration of the APT package manager, automatic upgrades of installed
+packages.
+
+- :ref:`progeekro.apt`
+
 System configuration
 --------------------
 

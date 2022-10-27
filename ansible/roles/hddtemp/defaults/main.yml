@@ -5,6 +5,19 @@
 # Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+# .. _hddtemp__ref_defaults:
+
+# progeekro.hddtemp default variables
+# ===================================
+
+# .. contents:: Sections
+#    :local:
+#
+# .. include:: ../../../../includes/global.rst
+
+# Installation and packages [[[
+# -----------------------------
+
 # Enable or disable support for hddtemp service
 hddtemp__enabled: True
 
@@ -17,6 +30,8 @@ hddtemp__packages_extra: []
 
 # Final list of APK packages that will be installed on this role
 hddtemp_packages: '{{ q("flattened", hddtemp__packages_default + hddtemp__packages_extra) }}'
+
+# ]]]
 
 # hddtemp network daemon switch. If set to true, hddtemp will listen
 # for incoming connections.
@@ -59,22 +74,26 @@ hddtemp__run_syslog: "0"
 # Other options to pass to hddtemp
 hddtemp__options: ""
 
+# .. envvar:: hddtemp__manual_entries [[[
+#
 # hddtemp__manual_entries - manually add entries for which hddtemp cannot discover.
-#  $ sudo hddtemp /dev/sda
-#  If it shows: WARNING: Drive /dev/sda doesn't seem to have a temperature sensor.
-#               /dev/sda: Samsung SSD 840 Series:  no sensor
-
-#  This can help discover the device data field number for temperature:
-#  $ sudo smartctl -a /dev/sda | grep -i temp
-
-#  Finds: 190 Airflow_Temperature_Cel 0x0032   077   060   000    Old_age   Always       -       23
-
+# $ sudo hddtemp /dev/sda
+#
+# If it shows: WARNING: Drive /dev/sda doesn't seem to have a temperature sensor.
+# /dev/sda: Samsung SSD 840 Series:  no sensor
+#
+# This can help discover the device data field number for temperature:
+# $ sudo smartctl -a /dev/sda | grep -i temp
+# Finds: 190 Airflow_Temperature_Cel 0x0032   077   060   000    Old_age   Always       -       23
+#
 # Field 1: Use a string or regex matching the drive's display name (as reported by hddtemp output)
 # Field 2: SMART data field number (190 for Samsung 840 and 860 models)
 # Field 3: Drive reports temperature in unit (C or F)
 # Field 4: Label string or comment you define
+
 hddtemp__manual_entries:
   - '"Samsung SSD (840|860)" 190 C "Temp for Samsung SSDs"'
+# ]]]
 
 # This will adjust HDDTemp to display temperature values in F or C.
 # It will also enable F to C conversions for temperatures pulled directly

@@ -5,6 +5,19 @@
 # Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+# .. _smartmontools__ref_defaults:
+
+# progeekro.smartmontools default variables
+# =========================================
+
+# .. contents:: Sections
+#    :local:
+#
+# .. include:: ../../../../includes/global.rst
+
+# Installation and packages [[[
+# -----------------------------
+
 # Enable or disable support for managing static machine information and MOTD.
 smartd__enabled: True
 
@@ -18,19 +31,29 @@ smartd__packages_extra: []
 # Final list of APK packages that will be installed on this role
 smartd__packages: '{{ q("flattened", smartd__packages_default + smartd__packages_extra) }}'
 
+# ]]]
+
+# Smartmontools daemon configuration [[[
+# --------------------------------------
+
+# .. envvar:: smartd__short_test [[[
+#
 # Define when smartctl shot and long test will take place.
 # Format is: MM/DD/d/HH, where:
 # MM = Month of the year, expressed with two decimal digits. The range is from 01 (January)
-#      to 12 (December) inclusive. Do not use a single decimal digit or the match will always fail!
+# to 12 (December) inclusive. Do not use a single decimal digit or the match will always fail!
 # DD = Day of the month, expressed with two decimal digits. The range is from 01 to 31 inclusive.
-#      Do not use a single decimal digit or the match will always fail!
+# Do not use a single decimal digit or the match will always fail!
 # d  = Day of the week, expressed with one decimal digit. The range is from 1 (Monday) to 7 (Sunday)
-#      inclusive.
+# inclusive.
 # HH = Hour of the day, written with two decimal digits, and given in hours after midnight. The
-#      range is 00 (midnight to just before 1am) to 23 (11pm to just before midnight) inclusive.
-#      Do not use a single decimal digit or the match will always fail!
-
+# range is 00 (midnight to just before 1am) to 23 (11pm to just before midnight) inclusive.
+# Do not use a single decimal digit or the match will always fail!
+#
 # Use a ".." as double digit and "." as any single digit.
 
 smartd__short_test: '../.././02'   # 2AM every day
 smartd__long_test:  '../15/./03'   # 3AM on the 15th of every month
+
+# ]]]
+# ]]]
