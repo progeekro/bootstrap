@@ -3,14 +3,12 @@
 *Bootstrap collection for any Debian base servers*
 
 [![GitHub CI][github-ci]](https://github.com/progeekro/bootstrao/actions?query=workflow%3A%22Continuous+Integration%22)
-[![GitLab CI][gitlab-ci]](https://gitlab.com/progeekro/bootstrap/pipelines)
 [![CII Best Practices][cii-best-practices]](https://bestpractices.coreinfrastructure.org/en/projects/6603)
 [![REUSE status][reuse-status]](https://api.reuse.software/info/github.com/progeekro/bootstrap)
 [![RSS commits][rss-commits]](https://github.com/progeekro/bootstrap/commits/main.atom)
 
 [progeek-logo]: https://raw.githubusercontent.com/progeekro/bootstrap/main/lib/images/progeek-50x37.png
 [github-ci]: https://github.com/progeekro/bootstrap/workflows/Continuous%20Integration/badge.svg
-[gitlab-ci]: https://gitlab.com/progeekro/bootstrap/badges/main/pipeline.svg
 [cii-best-practices]: https://bestpractices.coreinfrastructure.org/projects/6603/badge
 [reuse-status]: https://api.reuse.software/badge/github.com/progeekro/bootstrap
 [rss-commits]: https://img.shields.io/badge/RSS-commits-orange.svg

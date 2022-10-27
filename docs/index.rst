@@ -12,13 +12,10 @@ ProGeek Bootstrap
 
 *Bootstrap collection for any Debian base servers*
 
-|GitHub CI| |GitLab CI| |CII Best Practices| |REUSE Status|
+|GitHub CI| |CII Best Practices| |REUSE Status|
 
 .. |GitHub CI| image:: https://github.com/progeekro/bootstrap/workflows/Continuous%20Integration/badge.svg
    :target: https://github.com/progeekro/bootstrao/actions?query=workflow%3A%22Continuous+Integration%22
-
-.. |GitLab CI| image:: https://gitlab.com/progeekro/bootstrap/badges/main/pipeline.svg
-   :target: https://gitlab.com/progeekro/bootstrap/pipelines
 
 .. |CII Best Practices| image:: https://bestpractices.coreinfrastructure.org/projects/6603/badge
    :target: https://bestpractices.coreinfrastructure.org/en/projects/6603
