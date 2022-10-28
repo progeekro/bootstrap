@@ -16,7 +16,7 @@ The detailed changelog can be seen using :command:`git log` command.
 You can read information about required changes between releases in the
 :ref:`upgrade_notes` documentation.
 
-debops v0.0.1- 2022-10-19
+bootstrap v0.0.1- 2022-10-19
 --------------------------
 
 Added
