@@ -226,7 +226,7 @@ if [ -d "LICENSES" ] ; then
                                    | sed -e "s/^.*Used licenses: //" \
                                    | tr ',' ' ')"
 else
-    used_licenses=( "GPL-3.0-only" )
+    used_licenses=( "GPL-3.0-or-later" )
 fi
 
 workdir_path="$(mktemp -d "/tmp/progeekro-collections.XXXXXXXX")"

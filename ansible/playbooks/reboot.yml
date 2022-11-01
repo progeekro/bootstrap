@@ -5,8 +5,7 @@
 
 - name: Reboot hosts
   hosts: [ 'all_hosts' ]
-  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
-                 'progeekro.roles02', 'progeekro.roles03' ]
+  collections: [ 'progeekro.bootstrap']
   become: True
 
   gather_facts: False

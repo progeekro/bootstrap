@@ -4,8 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Manage HP ProLiant MicroServer Gen8 servers
-  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
-                 'progeekro.roles02', 'progeekro.roles03' ]
+  collections: [ 'progeekro.bootstrap' ]
   hosts: [ 'service_hp_microserver_gen8' ]
   become: True
 

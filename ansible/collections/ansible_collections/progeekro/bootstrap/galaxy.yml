@@ -1,5 +1,4 @@
 ---
-
 # .. vim: foldmarker=[[[,]]]:foldmethod=marker
 
 # Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
@@ -31,6 +30,9 @@ tags:
   - "sysadmin"
   - "cluster"
   - "datacenter"
+
+build_ignore:
+- '*.tar.gz'
 
 dependencies:
   "ansible.posix": "*"

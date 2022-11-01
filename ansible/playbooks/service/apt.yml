@@ -4,8 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Manage Advanced Package Manager
-  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
-                 'progeekro.roles02', 'progeekro.roles03' ]
+  collections: [ 'progeekro.bootstrap' ]
   hosts: [ 'all_hosts', 'service_apt' ]
   become: True
 

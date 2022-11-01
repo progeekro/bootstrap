@@ -4,8 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Security assertions
-  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
-                 'progeekro.roles02', 'progeekro.roles03' ]
+  collections: [ 'progeekro.bootstrap' ]
   hosts: [ 'all' ]
   tags: [ 'play::security-assertions' ]
   gather_facts: False
@@ -29,8 +28,7 @@
       delegate_to: 'localhost'
 
 - name: Bootstrap Python support on a host
-  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
-                 'progeekro.roles02', 'progeekro.roles03' ]
+  collections: [ 'progeekro.bootstrap' ]
   hosts: [ 'all_hosts', 'service_bootstrap' ]
   strategy: linear
   gather_facts: False
@@ -63,6 +61,9 @@
 
 - name: Import NTP role
   import_playbook: 'service/ntp.yml'
+a
+- name: The Ansible role manages Linux kernel parameters
+  import_playbook: 'service/sysctl.yml'
 
 - name: Import Tzdata role
   import_playbook: 'service/tzdata.yml'

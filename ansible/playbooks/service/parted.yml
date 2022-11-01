@@ -4,8 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Manage local disks and parted management
-  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
-                 'progeekro.roles02', 'progeekro.roles03' ]
+  collections: [ 'progeekro.bootstrap' ]
   hosts: [ 'service_parted' ]
   become: True
 

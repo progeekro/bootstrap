@@ -1,11 +1,12 @@
 ---
+# .. vim: foldmarker=[[[,]]]:foldmethod=marker
+
 # Copyright (C) 2021-2022 Zaharia Constantin <constantin.zaharia@progeek.ro>
 # Copyright (C) 2021-2022 ProGeek <https://progeek.ro>
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Manage smartmontools package contains two utility programs (smartctl and smartd) to control and monitor storage systems
-  collections: [ 'progeekro.bootstrap', 'progeekro.roles01',
-                 'progeekro.roles02', 'progeekro.roles03' ]
+  collections: [ 'progeekro.bootstrap' ]
   hosts: [ 'all_hosts', 'service_smartmontools' ]
   become: True
 
