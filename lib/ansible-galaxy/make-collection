@@ -79,7 +79,7 @@ fi
 
 workdir_path="$(mktemp -d "/tmp/progeekro-collections.XXXXXXXX")"
 for collection in "${collections[@]}" ; do
-    workdir_map[${collection}]="$(mktemp -d "${workdir_path}/progeekro-$$.${collection}.XXXXXXXX")"
+    workdir_map["${collection}"]="$(mktemp -d "${workdir_path}/progeekro-$$.${collection}.XXXXXXXX")"
 done
 
 file_list=(
@@ -268,11 +268,11 @@ for collection in "${collections[@]}" ; do
         ansible-galaxy collection build
         python3 -m galaxy_importer.main progeekro-*.tar.gz
         printf "Copy collection: %s to the new location\\n"  "${collection}"
-        cp progeekro-*.tar.gz "$(dirname ${repository_root})/"
+        cp progeekro-*.tar.gz "$(dirname "${repository_root}")/"
         popd > /dev/null || exit
     fi
 done
 
 # Show the file sizes of collection tarballs
 printf "Show the file sizes of collection tarballs\\n"
-du -h "$(dirname ${repository_root})"/*.tar.gz
+du -h "$(dirname "${repository_root}")"/*.tar.gz
