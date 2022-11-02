@@ -61,7 +61,7 @@
 
 - name: Import NTP role
   import_playbook: 'service/ntp.yml'
-a
+
 - name: The Ansible role manages Linux kernel parameters
   import_playbook: 'service/sysctl.yml'
 
